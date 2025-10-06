@@ -120,7 +120,7 @@ io.on("connection", (socket) => {
   socket.emit("center-info", { center: CENTER, message: "single-target mode with threatLevel" });
 });
 
-const EMIT_INTERVAL_MS = 5000;
+const EMIT_INTERVAL_MS = 30000;
 
 setInterval(() => {
   const ev = genEvent();
