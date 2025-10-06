@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ClientCesiumConfig from "./ClientCesiumConfig";
+import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,9 +21,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={cn(geistSans.variable, geistMono.variable, "antialiased")}>
+        {/* ini jalan di client untuk set CESIUM_BASE_URL */}
+        <ClientCesiumConfig />
         {children}
       </body>
     </html>
