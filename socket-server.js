@@ -1,4 +1,4 @@
-// socket-server-single-target.js
+// socket-server-multi-target-fixed.js
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -13,10 +13,10 @@ const LOCATIONS = [
   { id: "Jakarta", lat: -6.2088, lng: 106.8456 },
   { id: "Singapore", lat: 1.3521, lng: 103.8198 },
   { id: "Tokyo", lat: 35.6762, lng: 139.6503 },
-  { id: "Seoul", lat: 37.5665, lng: 126.9780 },
+  { id: "Seoul", lat: 37.5665, lng: 126.978 },
   { id: "Sydney", lat: -33.8688, lng: 151.2093 },
   { id: "Paris", lat: 48.8566, lng: 2.3522 },
-  { id: "New York", lat: 40.7128, lng: -74.0060 },
+  { id: "New York", lat: 40.7128, lng: -74.006 },
   { id: "London", lat: 51.5074, lng: -0.1278 },
   { id: "Los Angeles", lat: 34.0522, lng: -118.2437 },
   { id: "San Francisco", lat: 37.7749, lng: -122.4194 },
@@ -33,8 +33,8 @@ const LOCATIONS = [
   { id: "Hong Kong", lat: 22.3193, lng: 114.1694 },
   { id: "Bangkok", lat: 13.7563, lng: 100.5018 },
   { id: "Manila", lat: 14.5995, lng: 120.9842 },
-  { id: "Kuala Lumpur", lat: 3.1390, lng: 101.6869 },
-  { id: "Mumbai", lat: 19.0760, lng: 72.8777 },
+  { id: "Kuala Lumpur", lat: 3.139, lng: 101.6869 },
+  { id: "Mumbai", lat: 19.076, lng: 72.8777 },
   { id: "Delhi", lat: 28.7041, lng: 77.1025 },
   { id: "Karachi", lat: 24.8607, lng: 67.0011 },
   { id: "Dhaka", lat: 23.8103, lng: 90.4125 },
@@ -46,7 +46,7 @@ const LOCATIONS = [
   { id: "Johannesburg", lat: -26.2041, lng: 28.0473 },
   { id: "Nairobi", lat: -1.2921, lng: 36.8219 },
   { id: "Rome", lat: 41.9028, lng: 12.4964 },
-  { id: "Berlin", lat: 52.5200, lng: 13.4050 },
+  { id: "Berlin", lat: 52.52, lng: 13.405 },
   { id: "Madrid", lat: 40.4168, lng: -3.7038 },
   { id: "Barcelona", lat: 41.3851, lng: 2.1734 },
   { id: "Amsterdam", lat: 52.3676, lng: 4.9041 },
@@ -54,28 +54,23 @@ const LOCATIONS = [
   { id: "Zurich", lat: 47.3769, lng: 8.5417 },
   { id: "Oslo", lat: 59.9139, lng: 10.7522 },
   { id: "Stockholm", lat: 59.3293, lng: 18.0686 },
-  { id: "Tehran", lat: 35.6892, lng: 51.3890 },
+  { id: "Tehran", lat: 35.6892, lng: 51.389 },
   { id: "Baghdad", lat: 33.3152, lng: 44.3661 },
   { id: "Auckland", lat: -36.8485, lng: 174.7633 },
   { id: "Honolulu", lat: 21.3069, lng: -157.8583 },
   { id: "Hanoi", lat: 21.0285, lng: 105.8542 },
   { id: "Casablanca", lat: 33.5731, lng: -7.5898 },
-  { id: "Lisbon", lat: 38.7223, lng: -9.1393 }
+  { id: "Lisbon", lat: 38.7223, lng: -9.1393 },
 ];
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const ATTACKS = ["DDoS", "Brute Force", "SQL Injection", "Port Scan"];
 
-/**
- * Threat levels + warna (CSS hex). Bobot menentukan probabilitas.
- * - weight: relatif peluang dipilih
- * - color: hex untuk dipakai client/visual
- */
 const THREAT_LEVELS = [
-  { level: "Low", weight: 50, color: "#00C853" },      // green
-  { level: "Medium", weight: 30, color: "#FFEB3B" },   // yellow
-  { level: "High", weight: 15, color: "#FF9800" },     // orange
-  { level: "Critical", weight: 5, color: "#D50000" }   // red
+  { level: "Low", weight: 50, color: "#00C853" }, // green
+  { level: "Medium", weight: 30, color: "#FFEB3B" }, // yellow
+  { level: "High", weight: 15, color: "#FF9800" }, // orange
+  { level: "Critical", weight: 5, color: "#D50000" }, // red
 ];
 
 function pickWeighted(arr) {
@@ -88,45 +83,94 @@ function pickWeighted(arr) {
   return arr[arr.length - 1];
 }
 
-/**
- * TARGET PUSAT: semua serangan diarahkan ke sini.
- * Ganti CENTER sesuai kebutuhan Anda.
- */
-const CENTER = { id: "Home", lat: -6.177463257461286 , lng: 106.83199928943905 }; // contoh: Singapore
+const CENTER = [
+  { id: "Server 1", lat: -6.177463257461286, lng: 106.83199928943905 },
+  { id: "Server 2", lat: 1.327532426561102, lng: 103.84461791330435 },
+  { id: "Server 3", lat: 40.74657040942134, lng: 140.7196919470483 },
+];
+
+function pickNUnique(arr, n) {
+  if (n >= arr.length) return arr.slice();
+  const copy = arr.slice();
+  const picked = [];
+  for (let i = 0; i < n; i++) {
+    const idx = Math.floor(Math.random() * copy.length);
+    picked.push(copy.splice(idx, 1)[0]); // <-- splice, bukan slice
+  }
+  return picked;
+}
+
+function targetsCountForLevel(level) {
+  switch (level) {
+    case "Critical":
+      return 3;
+    case "High":
+      return 2;
+    case "Medium":
+      return 1;
+    default:
+      return 1;
+  }
+}
 
 function genEvent() {
   const src = pick(LOCATIONS);
   const threat = pickWeighted(THREAT_LEVELS);
 
-  // kita buat strength sedikit tergantung level (opsional)
-  const baseStrength = Math.floor(Math.random() * 50) + 10; // 10..59
-  const strengthBoost = threat.level === "Critical" ? 40 : threat.level === "High" ? 20 : threat.level === "Medium" ? 8 : 0;
-  const strength = Math.min(100, baseStrength + strengthBoost);
+  const baseStrength = Math.floor(Math.random() * 50) + 10;
+  const strengthBoost =
+    threat.level === "Critical"
+      ? 40
+      : threat.level === "High"
+      ? 20
+      : threat.level === "Medium"
+      ? 8
+      : 0;
+  const totalStrength = Math.min(100, baseStrength + strengthBoost);
+
+  const nTargets = targetsCountForLevel(threat.level);
+  const chosen = pickNUnique(CENTER, nTargets);
+
+  // safety: jika chosen.length === 0 (edge-case), fallback ke satu center
+  const finalChosen = chosen.length > 0 ? chosen : [CENTER[0]];
+  const per = Math.floor(totalStrength / finalChosen.length) || totalStrength;
+
+  const targets = finalChosen.map((t) => ({ ...t, strength: per }));
+
+  // legacy compatibility: target as first target (for older clients)
+  const legacyTarget = targets[0];
 
   return {
     id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
     attackType: pick(ATTACKS),
     source: src,
-    target: CENTER,
+    targets,
+    target: legacyTarget, // <-- legacy single target for compatibility
     timestamp: Date.now(),
-    threatLevel: threat.level,   // "Low" | "Medium" | "High" | "Critical"
-    color: threat.color,         // CSS hex string, e.g. "#FF9800"
-    strength
+    threatLevel: threat.level,
+    color: threat.color,
+    totalStrength,
   };
 }
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
-  socket.emit("center-info", { center: CENTER, message: "single-target mode with threatLevel" });
+  socket.emit("center-info", {
+    centers: CENTER,
+    message: "multi-target mode with threatLevel",
+  });
 });
 
-const EMIT_INTERVAL_MS = 30000;
+const EMIT_INTERVAL_MS = 10000;
 
 setInterval(() => {
   const ev = genEvent();
   io.emit("attack-event", ev);
+
   console.log(
-    `[Emit] ${new Date(ev.timestamp).toISOString()} - ${ev.source.id} -> ${ev.target.id} (${ev.attackType}) - ${ev.threatLevel}`
+    `[Emit] ${new Date(ev.timestamp).toISOString()} - ${ev.source.id} -> ${ev.targets
+      .map((t) => t.id)
+      .join(", ")} (${ev.attackType}) - ${ev.threatLevel}`
   );
 }, EMIT_INTERVAL_MS);
 
