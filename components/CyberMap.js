@@ -329,16 +329,7 @@ export default function GlobeSocketMap() {
           const radius = (150000 + (elapsed / 2000) * 400000) * scale;
           const alpha = 1 - elapsed / 2000;
 
-          if (elapsed < 300 && viewer) {
-            viewer.camera.flyTo({
-              destination: Cartesian3.fromDegrees(
-                exp.point.lng,
-                exp.point.lat,
-                800000 * scale
-              ),
-              duration: 1.5,
-            });
-          }
+          
 
           return (
             <Entity

@@ -12,8 +12,20 @@ export default function ThreatLogCard() {
     const socket = io("http://localhost:4000");
 
     socket.on("attack-event", (e) => {
-      const log = `[${new Date().toLocaleTimeString()}] threat from (${e.source.id} → ${e.target.id}) - ${e.attackType} - ${e.threatLevel}}`;
-      setLogs((prev) => [log, ...prev].slice(0, 50)); // simpan max 50 log
+      if (!e || !e.source || !Array.isArray(e.targets)) return;
+
+      const newLogs = e.targets.map((t) => {
+        const threatLevel = e.threatLevel || "Unknown";
+        const attackType = e.attackType || "Unknown";
+
+        // blokir / pantulan info
+        const blocked = t.blocked ? "🔒 Blocked" : "✅ Passed";
+        const deflect = t.deflectPoint ? " (Deflect)" : "";
+
+        return `[${new Date().toLocaleTimeString()}] ${e.source.id} → ${t.id} - ${attackType} - ${threatLevel} - ${blocked}${deflect}`;
+      });
+
+      setLogs((prev) => [...newLogs, ...prev].slice(0, 50));
     });
 
     return () => {
@@ -22,7 +34,7 @@ export default function ThreatLogCard() {
   }, []);
 
   return (
-    <Card className="w-[420px] h-[320px] bg-black` text-green-400 font-mono text-sm">
+    <Card className="w-[420px] h-[320px] bg-black/10 text-green-400 font-mono text-sm">
       <CardHeader className="pb-2 border-b border-green-700">
         <CardTitle className="text-green-300 text-base">🛡 Threat Logs</CardTitle>
       </CardHeader>
@@ -32,7 +44,7 @@ export default function ThreatLogCard() {
             <div className="text-green-600">No threats yet...</div>
           )}
           {logs.map((log, i) => (
-            <div key={i} className="whitespace-pre-wrap ">
+            <div key={i} className="whitespace-pre-wrap">
               {log}
             </div>
           ))}
