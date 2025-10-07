@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import { Viewer, Entity } from "resium";
 import {
   Cartesian3,
@@ -9,18 +8,14 @@ import {
   Cartographic,
   EllipsoidGeodesic,
   CallbackProperty,
-  JulianDate,
 } from "cesium";
 import io from "socket.io-client";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import * as Cesium from "cesium";
-
-import { Button } from "@/components/ui/button"; // pastikan path benar
 import ThreatLogCard from "./LogCard";
-Cesium.Ion.defaultAccessToken =
-  process.env.NEXT_PUBLIC_CESIUM_ION_TOKEN || "YOUR_ACCESS_TOKEN_HERE";
 
-/** helper: geodesic positions */
+Cesium.Ion.defaultAccessToken = process.env.NEXT_PUBLIC_CESIUM_ION_TOKEN || "";
+
 function geodesicPositions(lon1, lat1, lon2, lat2, segments = 128) {
   const startCarto = Cartographic.fromDegrees(lon1, lat1);
   const endCarto = Cartographic.fromDegrees(lon2, lat2);
@@ -36,165 +31,384 @@ function geodesicPositions(lon1, lat1, lon2, lat2, segments = 128) {
   return positions;
 }
 
+function generateCirclePositions(lon, lat, radiusMeters, segments = 64) {
+  const positions = [];
+  const R = 6371000; // radius Bumi (m)
+
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * 2 * Math.PI;
+    const deltaLat = (radiusMeters / R) * Math.cos(theta);
+    const deltaLon =
+      (radiusMeters / R) * Math.sin(theta) / Math.cos((lat * Math.PI) / 180);
+
+    const pLat = lat + (deltaLat * 180) / Math.PI;
+    const pLon = lon + (deltaLon * 180) / Math.PI;
+
+    positions.push(Cartesian3.fromDegrees(pLon, pLat, 0));
+  }
+
+  return positions;
+}
+
 export default function GlobeSocketMap() {
   const viewerRef = useRef(null);
   const socketRef = useRef(null);
   const routesRef = useRef(new Map());
-  const initCamRef = useRef(false);
-
+  const explosionsRef = useRef(new Map());
+  const deflectsRef = useRef(new Map());
+  const centersRef = useRef([]); // simpan centers dari server
+  const barriersRef = useRef([]); // simpan barriers dari server
+  const initialFlyDoneRef = useRef(false); // <-- pastikan fly sekali saja
   const [, setTick] = useState(0);
 
-  // initial camera fly
+  /** 🎥 Kamera awal (view global) */
   useEffect(() => {
-    const tryFly = () => {
-      if (viewerRef.current && !initCamRef.current) {
-        const cesiumViewer = viewerRef.current.cesiumElement;
-        cesiumViewer.camera.flyTo({
-          destination: Cartesian3.fromDegrees(0, 20, 20000000),
-          duration: 1.2,
-        });
-        initCamRef.current = true;
-      }
-    };
-    setTimeout(tryFly, 300);
+    const viewer = viewerRef.current?.cesiumElement;
+    if (viewer) {
+      viewer.camera.flyTo({
+        destination: Cartesian3.fromDegrees(0, 20, 20000000),
+        duration: 1.2,
+      });
+    }
   }, []);
 
-  // socket listener
+  /** 🌐 Socket listener */
   useEffect(() => {
     socketRef.current = io("http://localhost:4000");
 
-    socketRef.current.on("connect", () => {
-      console.log("connected to socket server", socketRef.current.id);
+    // terima info center & barrier sejak awal (server mengemit saat koneksi)
+    socketRef.current.on("center-info", (data) => {
+      if (data?.centers) centersRef.current = data.centers;
+      if (data?.barriers) barriersRef.current = data.barriers;
+
+      // Jika belum melakukan initial fly dan ada centers, fly ke center pertama
+      if (!initialFlyDoneRef.current && centersRef.current.length > 0) {
+        const viewer = viewerRef.current?.cesiumElement;
+        if (viewer) {
+          const first = centersRef.current[0];
+          // sesuaikan altitude/duration sesuai preferensi
+          viewer.camera.flyTo({
+            destination: Cartesian3.fromDegrees(first.lng, first.lat, 800000),
+            duration: 2.0,
+            easingFunction: Cesium.EasingFunction.QUADRATIC_OUT,
+          });
+          initialFlyDoneRef.current = true;
+        }
+      }
+
+      setTick(Date.now()); // paksa rerender untuk menampilkan centers/barriers
     });
 
-    const levelColors = {
-      Low: Color.GREEN,
-      Medium: Color.ORANGE,
-      High: Color.RED,
-      Critical: Color.PURPLE,
-    };
+    socketRef.current.on("server-status", (st) => {
+      console.log("server-status:", st);
+    });
 
     socketRef.current.on("attack-event", (e) => {
       const lonA = e.source.lng;
       const latA = e.source.lat;
-      const lonB = e.target.lng;
-      const latB = e.target.lat;
-
-      const positions = geodesicPositions(lonA, latA, lonB, latB, 160);
       const now = Date.now();
-      const duration = 3000;
+      const duration = 4000;
 
-      // ✅ parse color aman
-      let color;
-      try {
-        color = e.color ? Color.fromCssColorString(e.color) : Color.ORANGE;
-      } catch {
-        color = Color.ORANGE;
-      }
+      e.targets.forEach((t, i) => {
+        const lonB = t.blocked && t.blockedPoint ? t.blockedPoint.lng : t.lng;
+        const latB = t.blocked && t.blockedPoint ? t.blockedPoint.lat : t.lat;
+        const positions = geodesicPositions(lonA, latA, lonB, latB, 160);
 
-      routesRef.current.set(e.id, {
-        id: e.id,
-        positions,
-        createdAt: now,
-        duration,
-        color,
-        source: { lon: lonA, lat: latA },
-        target: { lon: lonB, lat: latB }, // ✅ fixed
-        threatLevel: e.threatLevel,
-        attackType: e.attackType,
+        const hasDeflect = !!t.deflectPoint;
+        const color = e.color
+          ? Color.fromCssColorString(e.color)
+          : Color.ORANGE;
+
+        const routeKey = `${e.id}-${i}-${now}`;
+        routesRef.current.set(routeKey, {
+          id: routeKey,
+          positions,
+          createdAt: now,
+          duration,
+          color,
+          source: { lon: lonA, lat: latA },
+          target: { lon: lonB, lat: latB },
+          hasDeflect,
+        });
+
+        // 💥 Ledakan (jika diblokir)
+        if (t.blocked && t.blockedPoint) {
+          explosionsRef.current.set(`${routeKey}-explosion`, {
+            point: t.blockedPoint,
+            color,
+            createdAt: now + duration - 500,
+          });
+        }
+
+        // 🪩 Pantulan (deflect)
+        if (hasDeflect) {
+          const lonC = t.deflectPoint.lng;
+          const latC = t.deflectPoint.lat;
+          const deflectPositions = geodesicPositions(
+            lonB,
+            latB,
+            lonC,
+            latC,
+            160
+          );
+
+          deflectsRef.current.set(`${routeKey}-deflect`, {
+            positions: deflectPositions,
+            createdAt: now + duration,
+            duration: 3000,
+            color: Color.CYAN,
+            point: { lon: lonC, lat: latC },
+          });
+        }
       });
 
       setTick(Date.now());
     });
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.off("attack-event");
-        socketRef.current.disconnect();
-      }
+      socketRef.current?.disconnect();
+      routesRef.current.clear();
+      explosionsRef.current.clear();
+      deflectsRef.current.clear();
+      centersRef.current = [];
+      barriersRef.current = [];
     };
   }, []);
 
+  /** 🧹 Cleanup otomatis */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      for (const [key, route] of routesRef.current.entries()) {
+        if (now - route.createdAt > route.duration + 1000) {
+          routesRef.current.delete(key);
+        }
+      }
+      for (const [key, exp] of explosionsRef.current.entries()) {
+        if (now - exp.createdAt > 1500) explosionsRef.current.delete(key);
+      }
+      for (const [key, def] of deflectsRef.current.entries()) {
+        if (now - def.createdAt > def.duration + 800)
+          deflectsRef.current.delete(key);
+      }
+      setTick(now);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  /** 🌍 Render globe */
   return (
     <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      {/* Overlay Button */}
-      <div className="absolute top-4  left-4 z-50">
+      <div className="absolute top-4 left-4 z-50">
         <ThreatLogCard />
       </div>
 
-      {/* Globe Viewer */}
       <Viewer full ref={viewerRef} timeline={false} animation={false}>
-        {Array.from(routesRef.current.values()).map((route) => {
-          const polyPositions = route.positions;
-          if (!polyPositions || polyPositions.length === 0) return null;
+        {/* --- RENDER CENTERS (ditampilkan dari awal saat center-info diterima) --- */}
+        {Array.from(centersRef.current || []).map((c) => (
+          <Entity key={`center-${c.id}`}>
+            <Entity
+              position={Cartesian3.fromDegrees(c.lng, c.lat, 50000)}
+              point={{
+                pixelSize: 10,
+                color: Color.WHITE,
+                outlineColor: Color.BLACK,
+                outlineWidth: 2,
+              }}
+            />
+            <Entity
+              position={Cartesian3.fromDegrees(c.lng, c.lat, 50000)}
+              label={{
+                text: c.id,
+                font: "14px sans-serif",
+                fillColor: Color.WHITE,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                outlineColor: Color.BLACK,
+                outlineWidth: 2,
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -12),
+              }}
+            />
+          </Entity>
+        ))}
 
-          const start = route.createdAt;
-          const dur = route.duration;
-          const positionsCount = polyPositions.length;
-
-          const movingPosition = new CallbackProperty((time) => {
-            const elapsed = JulianDate.toDate(time).getTime() - start;
-            const t = (elapsed % dur) / dur;
-            const idx = Math.floor(t * (positionsCount - 1));
-            return polyPositions[idx];
-          }, false);
-
-          const animatedLine = new CallbackProperty(() => {
-            const now = Date.now();
-            const elapsed = now - start;
-            const t = (elapsed % dur) / dur;
-            const idx = Math.floor(t * (positionsCount - 1));
-            const arr = [];
-            for (let i = 0; i <= idx; i++) {
-              arr.push(polyPositions[i]);
-            }
-            return arr;
-          }, false);
-
-          const srcCart = Cartesian3.fromDegrees(
-            route.source.lon,
-            route.source.lat,
-            10000
-          );
-          const dstCart = Cartesian3.fromDegrees(
-            route.target.lon,
-            route.target.lat,
-            10000
-          );
+        {/* --- RENDER BARRIERS (ellipse per barrier) --- */}
+        {Array.from(barriersRef.current || []).map((b, i) => {
+          const circlePositions = generateCirclePositions(
+            b.lng,
+            b.lat,
+            200000,
+            128
+          ); // 200 km
 
           return (
-            <Entity key={route.id}>
+            <Entity key={`barrier-circle-${b.id}`}>
+              <Entity
+                polyline={{
+                  positions: circlePositions,
+                  width: 2,
+                  material: Color.RED,
+                  clampToGround: true,
+                }}
+              />
+            </Entity>
+          );
+        })}
+
+        {/* 🔶 Garis utama (serangan) */}
+        {Array.from(routesRef.current.values()).map((route) => {
+          const { id, positions, createdAt, duration, color, source, target } =
+            route;
+          if (!positions?.length) return null;
+
+          const animatedLine = new CallbackProperty(() => {
+            const elapsed = Date.now() - createdAt;
+            const t = Math.min(elapsed / duration, 1);
+            return positions.slice(0, Math.floor(t * positions.length));
+          }, false);
+
+          const movingPoint = new CallbackProperty(() => {
+            const elapsed = Date.now() - createdAt;
+            const t = Math.min(elapsed / duration, 1);
+            return positions[Math.floor(t * (positions.length - 1))];
+          }, false);
+
+          return (
+            <Entity key={id}>
               <Entity
                 polyline={{
                   positions: animatedLine,
-                  material: route.color.withAlpha(1.0),
-                  width: 2,
-                  clampToGround: false,
+                  material: new Cesium.PolylineGlowMaterialProperty({
+                    glowPower: 0.2,
+                    color,
+                  }),
+                  width: 8,
                 }}
               />
               <Entity
-                position={movingPosition}
+                position={movingPoint}
                 point={{
                   pixelSize: 10,
-                  color: route.color,
+                  color,
                   outlineColor: Color.WHITE,
-                  outlineWidth: 5,
+                  outlineWidth: 2,
                 }}
               />
               <Entity
-                position={srcCart}
+                position={Cartesian3.fromDegrees(source.lon, source.lat, 50000)}
                 point={{
-                  pixelSize: 8,
-                  color: route.color,
+                  pixelSize: 6,
+                  color,
                   outlineColor: Color.WHITE,
                   outlineWidth: 1,
                 }}
               />
               <Entity
-                position={dstCart}
+                position={Cartesian3.fromDegrees(target.lon, target.lat, 50000)}
                 point={{
                   pixelSize: 8,
-                  color: route.color,
+                  color: Color.WHITE,
+                  outlineColor: color,
+                  outlineWidth: 3,
+                }}
+              />
+            </Entity>
+          );
+        })}
+
+        {/* 💥 Ledakan */}
+        {Array.from(explosionsRef.current.values()).map((exp, i) => {
+          const viewer = viewerRef.current?.cesiumElement;
+          const elapsed = Date.now() - exp.createdAt;
+          if (elapsed > 2000 || elapsed < 0) return null;
+
+          const cameraHeight =
+            viewer?.camera?.positionCartographic?.height || 20000000;
+          const scale = Math.max(0.5, 1.5e7 / cameraHeight);
+
+          const radius = (150000 + (elapsed / 2000) * 400000) * scale;
+          const alpha = 1 - elapsed / 2000;
+
+          if (elapsed < 300 && viewer) {
+            viewer.camera.flyTo({
+              destination: Cartesian3.fromDegrees(
+                exp.point.lng,
+                exp.point.lat,
+                800000 * scale
+              ),
+              duration: 1.5,
+            });
+          }
+
+          return (
+            <Entity
+              key={`exp-${i}`}
+              position={Cartesian3.fromDegrees(
+                exp.point.lng,
+                exp.point.lat,
+                20000
+              )}
+              ellipse={{
+                semiMajorAxis: radius,
+                semiMinorAxis: radius,
+                material: new Cesium.ColorMaterialProperty(
+                  exp.color.withAlpha(alpha * 0.8)
+                ),
+                height: 0,
+              }}
+            />
+          );
+        })}
+
+        {/* 🪩 Pantulan */}
+        {Array.from(deflectsRef.current.values()).map((def, i) => {
+          const viewer = viewerRef.current?.cesiumElement;
+          const elapsed = Date.now() - def.createdAt;
+          if (elapsed < 0 || elapsed > def.duration) return null;
+
+          const cameraHeight =
+            viewer?.camera?.positionCartographic?.height || 20000000;
+          const scale = Math.max(0.5, 1.5e7 / cameraHeight);
+
+          const t = elapsed / def.duration;
+          const idx = Math.floor(t * (def.positions.length - 1));
+          const animatedLine = def.positions.slice(0, idx + 1);
+
+          const pulse = Math.sin((t * Math.PI) ** 2) * 0.8 + 0.2;
+
+          return (
+            <Entity key={`def-${i}`}>
+              <Entity
+                polyline={{
+                  positions: animatedLine,
+                  material: new Cesium.PolylineGlowMaterialProperty({
+                    glowPower: 0.4,
+                    color: def.color.withAlpha(0.9),
+                  }),
+                  width: 4 * scale,
+                }}
+              />
+              <Entity
+                position={Cartesian3.fromDegrees(
+                  def.point.lon,
+                  def.point.lat,
+                  10000
+                )}
+                ellipse={{
+                  semiMajorAxis: 100000 * pulse * scale,
+                  semiMinorAxis: 100000 * pulse * scale,
+                  material: def.color.withAlpha(0.5),
+                }}
+              />
+              <Entity
+                position={Cartesian3.fromDegrees(
+                  def.point.lon,
+                  def.point.lat,
+                  10000
+                )}
+                point={{
+                  pixelSize: 14 * scale,
+                  color: def.color.brighten(0.2, new Color()),
                   outlineColor: Color.WHITE,
                   outlineWidth: 3,
                 }}
