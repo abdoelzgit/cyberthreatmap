@@ -5,9 +5,8 @@ import { Viewer, Entity } from "resium";
 import {
   Cartesian3,
   Color,
-  Cartographic,
-  EllipsoidGeodesic,
   CallbackProperty,
+  PolylineGlowMaterialProperty,
 } from "cesium";
 import io from "socket.io-client";
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -16,52 +15,40 @@ import ThreatLogCard from "./LogCard";
 
 Cesium.Ion.defaultAccessToken = process.env.NEXT_PUBLIC_CESIUM_ION_TOKEN || "";
 
-function geodesicPositions(lon1, lat1, lon2, lat2, segments = 128) {
-  const startCarto = Cartographic.fromDegrees(lon1, lat1);
-  const endCarto = Cartographic.fromDegrees(lon2, lat2);
-  const geodesic = new EllipsoidGeodesic(startCarto, endCarto);
+/** 🔹 Membuat garis lurus antar dua titik */
+function straightLinePositions(lon1, lat1, lon2, lat2, segments = 128) {
+  const geodesic = new Cesium.EllipsoidGeodesic(
+    Cesium.Cartographic.fromDegrees(lon1, lat1),
+    Cesium.Cartographic.fromDegrees(lon2, lat2)
+  );
+
   const positions = [];
   for (let i = 0; i <= segments; i++) {
     const frac = i / segments;
     const carto = geodesic.interpolateUsingFraction(frac);
-    positions.push(
-      Cartesian3.fromRadians(carto.longitude, carto.latitude, 100000)
+    // Sedikit ketinggian biar garisnya tidak menempel ke bumi
+    const height = 200 + Math.sin(Math.PI * frac) * 200000; 
+    const pos = Cartesian3.fromRadians(
+      carto.longitude,
+      carto.latitude,
+      height
     );
+    positions.push(pos);
   }
   return positions;
 }
 
-function generateCirclePositions(lon, lat, radiusMeters, segments = 64) {
-  const positions = [];
-  const R = 6371000; // radius Bumi (m)
-
-  for (let i = 0; i <= segments; i++) {
-    const theta = (i / segments) * 2 * Math.PI;
-    const deltaLat = (radiusMeters / R) * Math.cos(theta);
-    const deltaLon =
-      (radiusMeters / R) * Math.sin(theta) / Math.cos((lat * Math.PI) / 180);
-
-    const pLat = lat + (deltaLat * 180) / Math.PI;
-    const pLon = lon + (deltaLon * 180) / Math.PI;
-
-    positions.push(Cartesian3.fromDegrees(pLon, pLat, 0));
-  }
-
-  return positions;
-}
 
 export default function GlobeSocketMap() {
   const viewerRef = useRef(null);
   const socketRef = useRef(null);
   const routesRef = useRef(new Map());
   const explosionsRef = useRef(new Map());
-  const deflectsRef = useRef(new Map());
-  const centersRef = useRef([]); // simpan centers dari server
-  const barriersRef = useRef([]); // simpan barriers dari server
-  const initialFlyDoneRef = useRef(false); // <-- pastikan fly sekali saja
+  const centersRef = useRef([]);
+  const initialFlyDoneRef = useRef(false);
   const [, setTick] = useState(0);
 
-  /** 🎥 Kamera awal (view global) */
+  /** 🎥 Kamera awal */
   useEffect(() => {
     const viewer = viewerRef.current?.cesiumElement;
     if (viewer) {
@@ -76,17 +63,13 @@ export default function GlobeSocketMap() {
   useEffect(() => {
     socketRef.current = io("http://localhost:4000");
 
-    // terima info center & barrier sejak awal (server mengemit saat koneksi)
     socketRef.current.on("center-info", (data) => {
       if (data?.centers) centersRef.current = data.centers;
-      if (data?.barriers) barriersRef.current = data.barriers;
 
-      // Jika belum melakukan initial fly dan ada centers, fly ke center pertama
       if (!initialFlyDoneRef.current && centersRef.current.length > 0) {
         const viewer = viewerRef.current?.cesiumElement;
+        const first = centersRef.current[0];
         if (viewer) {
-          const first = centersRef.current[0];
-          // sesuaikan altitude/duration sesuai preferensi
           viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(first.lng, first.lat, 800000),
             duration: 2.0,
@@ -95,71 +78,48 @@ export default function GlobeSocketMap() {
           initialFlyDoneRef.current = true;
         }
       }
-
-      setTick(Date.now()); // paksa rerender untuk menampilkan centers/barriers
+      setTick(Date.now());
     });
 
-    socketRef.current.on("server-status", (st) => {
-      console.log("server-status:", st);
-    });
-
+    /** 🚀 Saat serangan terjadi */
     socketRef.current.on("attack-event", (e) => {
       const lonA = e.source.lng;
       const latA = e.source.lat;
       const now = Date.now();
       const duration = 4000;
 
+      const levelColors = {
+        Low: "#FFEB3B",
+        Medium: "#FFEB3B",
+        High: "#FFEB3B",
+        Critical: "#FFEB3B",
+      };
+      const attackColor = Color.fromCssColorString(
+        levelColors[e.threatLevel] || "#FFFFFF"
+      );
+
       e.targets.forEach((t, i) => {
-        const lonB = t.blocked && t.blockedPoint ? t.blockedPoint.lng : t.lng;
-        const latB = t.blocked && t.blockedPoint ? t.blockedPoint.lat : t.lat;
-        const positions = geodesicPositions(lonA, latA, lonB, latB, 160);
-
-        const hasDeflect = !!t.deflectPoint;
-        const color = e.color
-          ? Color.fromCssColorString(e.color)
-          : Color.ORANGE;
-
+        const lonB = t.lng;
+        const latB = t.lat;
+        const positions = straightLinePositions(lonA, latA, lonB, latB, 128);
         const routeKey = `${e.id}-${i}-${now}`;
+
         routesRef.current.set(routeKey, {
           id: routeKey,
           positions,
           createdAt: now,
           duration,
-          color,
+          color: attackColor,
+          accepted: t.accepted,
           source: { lon: lonA, lat: latA },
           target: { lon: lonB, lat: latB },
-          hasDeflect,
         });
 
-        // 💥 Ledakan (jika diblokir)
-        if (t.blocked && t.blockedPoint) {
-          explosionsRef.current.set(`${routeKey}-explosion`, {
-            point: t.blockedPoint,
-            color,
-            createdAt: now + duration - 500,
-          });
-        }
-
-        // 🪩 Pantulan (deflect)
-        if (hasDeflect) {
-          const lonC = t.deflectPoint.lng;
-          const latC = t.deflectPoint.lat;
-          const deflectPositions = geodesicPositions(
-            lonB,
-            latB,
-            lonC,
-            latC,
-            160
-          );
-
-          deflectsRef.current.set(`${routeKey}-deflect`, {
-            positions: deflectPositions,
-            createdAt: now + duration,
-            duration: 3000,
-            color: Color.CYAN,
-            point: { lon: lonC, lat: latC },
-          });
-        }
+        explosionsRef.current.set(`${routeKey}-explosion`, {
+          point: { lng: lonB, lat: latB },
+          color: t.accepted ? Color.LIME : Color.RED,
+          createdAt: now + duration,
+        });
       });
 
       setTick(Date.now());
@@ -169,27 +129,21 @@ export default function GlobeSocketMap() {
       socketRef.current?.disconnect();
       routesRef.current.clear();
       explosionsRef.current.clear();
-      deflectsRef.current.clear();
       centersRef.current = [];
-      barriersRef.current = [];
     };
   }, []);
 
-  /** 🧹 Cleanup otomatis */
+  /** 🧹 Auto cleanup */
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       for (const [key, route] of routesRef.current.entries()) {
-        if (now - route.createdAt > route.duration + 1000) {
+        if (now - route.createdAt > route.duration + 2500) {
           routesRef.current.delete(key);
         }
       }
       for (const [key, exp] of explosionsRef.current.entries()) {
         if (now - exp.createdAt > 1500) explosionsRef.current.delete(key);
-      }
-      for (const [key, def] of deflectsRef.current.entries()) {
-        if (now - def.createdAt > def.duration + 800)
-          deflectsRef.current.delete(key);
       }
       setTick(now);
     }, 500);
@@ -204,7 +158,7 @@ export default function GlobeSocketMap() {
       </div>
 
       <Viewer full ref={viewerRef} timeline={false} animation={false}>
-        {/* --- RENDER CENTERS (ditampilkan dari awal saat center-info diterima) --- */}
+        {/* --- CENTER POINTS --- */}
         {Array.from(centersRef.current || []).map((c) => (
           <Entity key={`center-${c.id}`}>
             <Entity
@@ -232,91 +186,61 @@ export default function GlobeSocketMap() {
           </Entity>
         ))}
 
-        {/* --- RENDER BARRIERS (ellipse per barrier) --- */}
-        {Array.from(barriersRef.current || []).map((b, i) => {
-          const circlePositions = generateCirclePositions(
-            b.lng,
-            b.lat,
-            200000,
-            128
-          ); // 200 km
-
-          return (
-            <Entity key={`barrier-circle-${b.id}`}>
-              <Entity
-                polyline={{
-                  positions: circlePositions,
-                  width: 2,
-                  material: Color.RED,
-                  clampToGround: true,
-                }}
-              />
-            </Entity>
-          );
-        })}
-
-        {/* 🔶 Garis utama (serangan) */}
+        {/* 🔶 GARIS SERANGAN (animasi + transisi warna hasil) */}
         {Array.from(routesRef.current.values()).map((route) => {
-          const { id, positions, createdAt, duration, color, source, target } =
-            route;
+          const { id, positions, createdAt, duration, color, accepted } = route;
           if (!positions?.length) return null;
 
           const animatedLine = new CallbackProperty(() => {
             const elapsed = Date.now() - createdAt;
             const t = Math.min(elapsed / duration, 1);
-            return positions.slice(0, Math.floor(t * positions.length));
+            const idx = Math.floor(t * (positions.length - 1));
+            return positions.slice(0, idx + 1);
           }, false);
 
-          const movingPoint = new CallbackProperty(() => {
+          const animatedColor = new CallbackProperty(() => {
             const elapsed = Date.now() - createdAt;
             const t = Math.min(elapsed / duration, 1);
-            return positions[Math.floor(t * (positions.length - 1))];
+            const baseColor = color;
+
+            // Setelah animasi selesai, ubah warna jadi hasil (fade)
+            if (t >= 1 && accepted !== null && accepted !== undefined) {
+              const resultColor = accepted ? Color.LIME : Color.RED;
+              const fadeDuration = 2000;
+              const fadeProgress = Math.min(
+                1,
+                (elapsed - duration) / fadeDuration
+              );
+              const lerped = Cesium.Color.lerp(
+                baseColor,
+                resultColor,
+                fadeProgress,
+                new Cesium.Color()
+              );
+              return lerped.withAlpha(1 - fadeProgress * 0.2);
+            }
+
+            return baseColor;
           }, false);
 
+          const material = new PolylineGlowMaterialProperty({
+            glowPower: 0.3,
+            color: animatedColor,
+          });
+
           return (
-            <Entity key={id}>
-              <Entity
-                polyline={{
-                  positions: animatedLine,
-                  material: new Cesium.PolylineGlowMaterialProperty({
-                    glowPower: 0.2,
-                    color,
-                  }),
-                  width: 8,
-                }}
-              />
-              <Entity
-                position={movingPoint}
-                point={{
-                  pixelSize: 10,
-                  color,
-                  outlineColor: Color.WHITE,
-                  outlineWidth: 2,
-                }}
-              />
-              <Entity
-                position={Cartesian3.fromDegrees(source.lon, source.lat, 50000)}
-                point={{
-                  pixelSize: 6,
-                  color,
-                  outlineColor: Color.WHITE,
-                  outlineWidth: 1,
-                }}
-              />
-              <Entity
-                position={Cartesian3.fromDegrees(target.lon, target.lat, 50000)}
-                point={{
-                  pixelSize: 8,
-                  color: Color.WHITE,
-                  outlineColor: color,
-                  outlineWidth: 3,
-                }}
-              />
-            </Entity>
+            <Entity
+              key={id}
+              polyline={{
+                positions: animatedLine,
+                width: 6,
+                material,
+              }}
+            />
           );
         })}
 
-        {/* 💥 Ledakan */}
+        {/* 💥 Explosion efek */}
         {Array.from(explosionsRef.current.values()).map((exp, i) => {
           const viewer = viewerRef.current?.cesiumElement;
           const elapsed = Date.now() - exp.createdAt;
@@ -328,8 +252,6 @@ export default function GlobeSocketMap() {
 
           const radius = (150000 + (elapsed / 2000) * 400000) * scale;
           const alpha = 1 - elapsed / 2000;
-
-          
 
           return (
             <Entity
@@ -348,63 +270,6 @@ export default function GlobeSocketMap() {
                 height: 0,
               }}
             />
-          );
-        })}
-
-        {/* 🪩 Pantulan */}
-        {Array.from(deflectsRef.current.values()).map((def, i) => {
-          const viewer = viewerRef.current?.cesiumElement;
-          const elapsed = Date.now() - def.createdAt;
-          if (elapsed < 0 || elapsed > def.duration) return null;
-
-          const cameraHeight =
-            viewer?.camera?.positionCartographic?.height || 20000000;
-          const scale = Math.max(0.5, 1.5e7 / cameraHeight);
-
-          const t = elapsed / def.duration;
-          const idx = Math.floor(t * (def.positions.length - 1));
-          const animatedLine = def.positions.slice(0, idx + 1);
-
-          const pulse = Math.sin((t * Math.PI) ** 2) * 0.8 + 0.2;
-
-          return (
-            <Entity key={`def-${i}`}>
-              <Entity
-                polyline={{
-                  positions: animatedLine,
-                  material: new Cesium.PolylineGlowMaterialProperty({
-                    glowPower: 0.4,
-                    color: def.color.withAlpha(0.9),
-                  }),
-                  width: 4 * scale,
-                }}
-              />
-              <Entity
-                position={Cartesian3.fromDegrees(
-                  def.point.lon,
-                  def.point.lat,
-                  10000
-                )}
-                ellipse={{
-                  semiMajorAxis: 100000 * pulse * scale,
-                  semiMinorAxis: 100000 * pulse * scale,
-                  material: def.color.withAlpha(0.5),
-                }}
-              />
-              <Entity
-                position={Cartesian3.fromDegrees(
-                  def.point.lon,
-                  def.point.lat,
-                  10000
-                )}
-                point={{
-                  pixelSize: 14 * scale,
-                  color: def.color.brighten(0.2, new Color()),
-                  outlineColor: Color.WHITE,
-                  outlineWidth: 3,
-                }}
-              />
-            </Entity>
           );
         })}
       </Viewer>
