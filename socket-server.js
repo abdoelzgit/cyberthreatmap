@@ -11,7 +11,7 @@ const PORT = 4000;
 
 // CONFIG
 const EARTH_RADIUS = 6371000;
-const DETECTION_RADIUS = 1_500_000; // 1500 km (zone detection radius)
+const DETECTION_RADIUS = 6_000_000; // 6000 km (zone detection radius)
 const ATTACK_SPEED_MPS = 800; // incoming missile speed (m/s)
 const INTERCEPTOR_SPEED_MPS = 1200; // interceptor speed (m/s)
 const UPDATE_INTERVAL = 10000; // ms — event generation interval
@@ -117,6 +117,7 @@ function startSimulationForAttack(ev) {
     target: ev.target,
     attackTravelTimeMs: ev.attackTravelTimeMs,
     startTime: attackStart,
+    launchedCenters: new Set(), // track centers that have launched interceptors
   };
 
   const attackTimer = setInterval(() => {
@@ -132,6 +133,18 @@ function startSimulationForAttack(ev) {
       elapsed,
       attackTravelTimeMs: attackMeta.attackTravelTimeMs,
     });
+
+    // Check if missile is within detection radius for ANY center
+    for (const center of CENTERS) {
+      if (!attackMeta.launchedCenters.has(center.id)) {
+        const distanceToCenter = haversine(pos.lat, pos.lng, center.lat, center.lng);
+        if (distanceToCenter <= DETECTION_RADIUS) {
+          console.log(`🚀 DETECTED: Missile ${ev.id} entered detection radius of ${center.id} (${Math.round(distanceToCenter/1000)}km) - LAUNCHING INTERCEPTOR!`);
+          launchInterceptor(ev, center);
+          attackMeta.launchedCenters.add(center.id);
+        }
+      }
+    }
 
     if (frac >= 1) {
       io.emit("attack-final", {
@@ -226,8 +239,20 @@ function launchInterceptor(ev, center) {
       posMissile,
     });
 
+    // Calculate distance between interceptor and missile
+    const distance = haversine(
+      posInterceptor.lat,
+      posInterceptor.lng,
+      posMissile.lat,
+      posMissile.lng
+    );
+
+    // Debug logging for collision detection
+    console.log(`🔍 ${interceptorMeta.simId}: Distance = ${Math.round(distance)}m, Missile frac: ${missileFrac.toFixed(3)}, Intercept frac: ${fracIntercept.toFixed(3)}`);
+
     // success: interceptor arrives source while missile belum hit target
     if (fracIntercept >= 1 && missileFrac < 1) {
+      console.log(`✅ ${interceptorMeta.simId}: Interceptor reached source before missile hit target`);
       io.emit("intercept-result", {
         simId: interceptorMeta.simId,
         attackId: ev.id,
@@ -241,6 +266,7 @@ function launchInterceptor(ev, center) {
 
     // failed: missile hit target before interceptor arrives
     if (missileFrac >= 1 && fracIntercept < 1) {
+      console.log(`❌ ${interceptorMeta.simId}: Missile hit target before interceptor arrived`);
       io.emit("intercept-result", {
         simId: interceptorMeta.simId,
         attackId: ev.id,
@@ -257,11 +283,27 @@ function launchInterceptor(ev, center) {
     // tie case
     if (fracIntercept >= 1 && missileFrac >= 1) {
       const intercepted = elapsed <= attackElapsed;
+      console.log(`🤝 ${interceptorMeta.simId}: Tie case - Intercepted: ${intercepted} (elapsed: ${elapsed}ms vs ${attackElapsed}ms)`);
       io.emit("intercept-result", {
         simId: interceptorMeta.simId,
         attackId: ev.id,
         intercepted,
         interceptAt: posInterceptor,
+        times: { interceptorElapsed: elapsed, missileElapsed: attackElapsed },
+      });
+      clearInterval(turretTimer);
+      cleanupDefense(ev.id, interceptorMeta.simId);
+    }
+
+    // Additional collision check: if interceptor and missile are very close (< 100km)
+    if (distance < 100000 && fracIntercept > 0.1) { // interceptor sudah launch minimal 10%
+      console.log(`💥 ${interceptorMeta.simId}: COLLISION DETECTED! Distance: ${Math.round(distance)}m`);
+      io.emit("intercept-result", {
+        simId: interceptorMeta.simId,
+        attackId: ev.id,
+        intercepted: true,
+        interceptAt: posInterceptor,
+        collisionDistance: distance,
         times: { interceptorElapsed: elapsed, missileElapsed: attackElapsed },
       });
       clearInterval(turretTimer);
@@ -311,40 +353,10 @@ setInterval(() => {
     `🚀 New attack: ${ev.attackType} ${ev.source.id} → ${ev.target.id}`
   );
 
-  // cek tiap center: apakah lintasan melewati radius deteksi center
-  const detectingCenters = [];
+  // Start attack simulation for all attacks
+  startSimulationForAttack(ev);
 
-  // Cari server target dari event serangan
-  const targetCenter = CENTERS.find((c) => c.id === ev.target.id);
-
-  if (targetCenter) {
-    console.log(
-      `🛡️ Target ${targetCenter.id} under attack — launching interceptor!`
-    );
-    launchInterceptor(ev, targetCenter);
-  } else {
-    console.log(`⚠️ Target ${ev.target.id} not found in CENTERS list.`);
-  }
-
-  if (detectingCenters.length === 0) {
-    console.log(
-      "❌ No center detected path — missile continues toward target."
-    );
-    startSimulationForAttack(ev);
-  } else {
-    console.log(
-      `🛡️ ${detectingCenters.length} center(s) detected path — launching interceptors.`
-    );
-    startSimulationForAttack(ev);
-    for (const d of detectingCenters) {
-      launchInterceptor(ev, d.center);
-      console.log(
-        `   → Launched from ${d.center.id} (time to source ~ ${Math.round(
-          d.interceptorTimeMs
-        )} ms)`
-      );
-    }
-  }
+  console.log(`⚡ Attack simulation started - interceptor will launch when missile enters detection radius`);
 }, UPDATE_INTERVAL);
 
 app.get("/centers", (req, res) => res.json({ centers: CENTERS }));

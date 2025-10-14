@@ -124,7 +124,20 @@ export default function GlobeSocketMap() {
   // SOCKET SETUP
   // ====================================================
   useEffect(() => {
+    console.log("🔌 Connecting to socket server...");
     socketRef.current = io("http://localhost:4000");
+
+    socketRef.current.on("connect", () => {
+      console.log("✅ Socket connected successfully");
+    });
+
+    socketRef.current.on("disconnect", () => {
+      console.log("❌ Socket disconnected");
+    });
+
+    socketRef.current.on("connect_error", (error) => {
+      console.error("🔌 Socket connection error:", error);
+    });
 
     socketRef.current.on("center-info", (data) => {
       if (data?.centers) centersRef.current = data.centers;
@@ -264,6 +277,7 @@ export default function GlobeSocketMap() {
 
     // Keep server-initiated defense-launch handler (honor intercept point if provided)
     socketRef.current.on("defense-launch", (p) => {
+      console.log("🛡️ RECEIVED defense-launch:", p.simId, "from", p.center.id);
       const intercept = p.interceptPoint || p.threat;
       const id = `def-${p.id}-${Date.now()}-${Math.random()
         .toString(36)
@@ -291,8 +305,37 @@ export default function GlobeSocketMap() {
           target: intercept,
           currentPosition: null,
         });
+        console.log("🚀 DEFENSE ROUTE CREATED:", id, "positions:", pos.length);
         setTick(Date.now());
       }, delay);
+    });
+
+    // Add intercept-result handler for debugging
+    socketRef.current.on("intercept-result", (result) => {
+      console.log("💥 RECEIVED intercept-result:", result.simId, "intercepted:", result.intercepted, "distance:", result.collisionDistance || "N/A");
+      if (result.intercepted) {
+        // Force immediate cleanup of both attack and defense routes
+        const attackId = result.attackId;
+        const defenseId = result.simId;
+
+        // Remove attack route
+        attackRoutesRef.current.forEach((route, key) => {
+          if (key.includes(attackId)) {
+            console.log("🗑️ REMOVING ATTACK ROUTE:", key);
+            attackRoutesRef.current.delete(key);
+          }
+        });
+
+        // Remove defense route
+        defenseRoutesRef.current.forEach((route, key) => {
+          if (key.includes(defenseId)) {
+            console.log("🗑️ REMOVING DEFENSE ROUTE:", key);
+            defenseRoutesRef.current.delete(key);
+          }
+        });
+
+        setTick(Date.now());
+      }
     });
 
     return () => {
@@ -387,14 +430,28 @@ export default function GlobeSocketMap() {
   // ====================================================
   return (
     <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      <div className="absolute top-4 left-4 z-50">
-        <ThreatLogCard />
-      </div>
+      
 
       <Viewer full ref={viewerRef} timeline={false} animation={false}>
         {/* Defense Centers */}
         {centersRef.current.map((c) => (
           <Entity key={c.id}>
+            {/* Detection Radius Circle */}
+            <Entity>
+              <Entity
+                position={Cartesian3.fromDegrees(c.lng, c.lat, 0)}
+                ellipse={{
+                  semiMinorAxis: 1000000, // 6000km radius (sama dengan server)
+                  semiMajorAxis: 1000000, // 6000km radius (sama dengan server)
+                  height: 0,
+                  material: Color.LIME.withAlpha(0.1), // hijau pudar
+                  outline: true,
+                  outlineColor: Color.LIME.withAlpha(0.3),
+                  outlineWidth: 2,
+                }}
+              />
+            </Entity>
+            {/* Center Point */}
             <Entity
               position={Cartesian3.fromDegrees(c.lng, c.lat, 100000)}
               point={{
