@@ -10,7 +10,7 @@
   "rewrites": [
     {
       "source": "/socket.io/:path*",
-      "destination": "https://your-railway-app.railway.app/socket.io/:path*"
+      "destination": "${SOCKET_SERVER_URL}/socket.io/:path*"
     }
   ]
 }

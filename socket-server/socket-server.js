@@ -7,7 +7,7 @@ const {
   getAttackLocationsWithGeo,
   getCentersFromDatabase,
   getHistoricalAttacks,
-} = require("./ip-geolocation");
+} = require("../ip-geolocation");
 
 const app = express();
 const srv = http.createServer(app);
@@ -216,11 +216,8 @@ async function initializeLocations() {
     // Load attacker data from database
     const { Client } = require('pg');
     const client = new Client({
-      host: 'localhost',
-      port: 5432,
-      database: 'Databases',
-      user: 'postgres',
-      password: '123'
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
     });
 
     await client.connect();

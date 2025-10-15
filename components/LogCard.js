@@ -9,7 +9,7 @@ export default function ThreatLogCard() {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000");
 
     socket.on("attack-event", (e) => {
       if (!e || !e.source || !Array.isArray(e.targets)) return;

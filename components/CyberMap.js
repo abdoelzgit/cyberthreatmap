@@ -128,7 +128,7 @@ export default function GlobeSocketMap() {
   // ====================================================
   useEffect(() => {
     console.log("🔌 Connecting to socket server...");
-    socketRef.current = io("http://localhost:4000");
+    socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000");
 
     socketRef.current.on("connect", () => {
       console.log("✅ Socket connected successfully");
