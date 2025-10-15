@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+          curl -k -u mnoor:dBK1kGRs/MsbpOgGt1AF/lTxslLvazes -H "Content-Type: application/json" -X GET "https://10.90.0.105:9200/wazuh-alerts-4.*/_search" -d '{"size": 10,"sort": [{"@timestamp": "desc"}],"query": {"range": {"@timestamp": {"gte": "now-24h"}}}, "agent" : ["pgesvr1","SVR-portal-mypge-GCP","PGEKP-SVRX-LSD-7","PGEKP-SVRX-LABKmj-181","SVR-HSEPASS-DO","SVR-PAS-NotifMevent-DO","SVR-SVCMEVENT-DO","SVR-PEKKAMYPGE-DO","PGELHD-SVRX-ANT1-16","PGELHD-SVRX-Win-19","PGEKP-SVR-125"]}'
+
+"terms": {
+"agent.name.keyword": [
+"pgesvr1",
+"SVR-portal-mypge-GCP",
+"PGEKP-SVRX-LSD-7",
+"PGEKP-SVRX-LABKmj-181",
+"SVR-HSEPASS-DO",
+"SVR-PAS-NotifMevent-DO",
+"SVR-SVCMEVENT-DO",
+"SVR-PEKKAMYPGE-DO",
+"PGELHD-SVRX-ANT1-16",
+"PGELHD-SVRX-Win-19",
+"PGEKP-SVR-125"
+]
+}

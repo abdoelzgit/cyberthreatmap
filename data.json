@@ -1,630 +1,3771 @@
 {
-  "took": 46,
+  "took": 64,
   "timed_out": false,
-  "_shards": { "total": 261, "successful": 261, "skipped": 255, "failed": 0 },
+  "_shards": { "total": 264, "successful": 264, "skipped": 258, "failed": 0 },
   "hits": {
     "total": { "value": 10000, "relation": "gte" },
     "max_score": null,
     "hits": [
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "9uPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "WdMR55kBdMmPowyu32JY",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
           "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.127",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890554538832",
-            "sessionid": "2313370861",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "i.instagram.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "57.144.100.192",
-            "dstintf": "Inet-Icon",
-            "direction": "outgoing",
-            "sentbyte": "206",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://i.instagram.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "52023",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:11",
-            "dstcountry": "Indonesia",
-            "rcvdbyte": "0"
+            "protocol": "GET",
+            "srcip": "162.158.108.120",
+            "id": "403",
+            "url": "/"
           },
           "rule": {
-            "firedtimes": 31130,
+            "firedtimes": 19833,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:11 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890554538832 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370861 srcip=10.90.24.127 srcport=52023 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=57.144.100.192 dstport=443 dstcountry=\"Indonesia\" dstintf=\"Inet-Icon\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"i.instagram.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://i.instagram.com/\" sentbyte=206 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "162.158.108.120 - - [15/Oct/2025:15:52:09 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\"",
+          "id": "1760518330.356993049",
+          "timestamp": "2025-10-15T08:52:10.118+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:11.035Z",
-          "location": "10.90.0.11",
-          "id": "1760429891.1352289344",
-          "timestamp": "2025-10-14T08:18:11.035+0000"
+          "@timestamp": "2025-10-15T08:52:10.118Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "city_name": "Amsterdam",
+            "country_name": "Netherlands",
+            "region_name": "North Holland",
+            "location": { "lon": 4.9087, "lat": 52.3534 }
+          }
         },
-        "sort": [1760429891035]
+        "sort": [1760518330118]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "8OPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "WNMR55kBdMmPowyu32JY",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
           "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.66.6",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890115984401",
-            "sessionid": "2313370651",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "z-m-gateway.facebook.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "57.144.152.3",
-            "dstintf": "port5",
-            "direction": "outgoing",
-            "sentbyte": "215",
-            "srcintf": "VLAN_301",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://z-m-gateway.facebook.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "34578",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:11",
-            "dstcountry": "Singapore",
-            "rcvdbyte": "0"
+            "protocol": "GET",
+            "srcip": "172.71.81.47",
+            "id": "403",
+            "url": "/"
           },
           "rule": {
-            "firedtimes": 31124,
+            "firedtimes": 19832,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:11 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890115984401 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370651 srcip=10.90.66.6 srcport=34578 srccountry=\"Reserved\" srcintf=\"VLAN_301\" srcintfrole=\"lan\" srcuuid=\"18e90266-9ebe-51f0-3130-c3fb416c11e7\" dstip=57.144.152.3 dstport=443 dstcountry=\"Singapore\" dstintf=\"port5\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"z-m-gateway.facebook.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://z-m-gateway.facebook.com/\" sentbyte=215 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "172.71.81.47 - - [15/Oct/2025:15:52:09 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\"",
+          "id": "1760518330.356992512",
+          "timestamp": "2025-10-15T08:52:10.104+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.988Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352278794",
-          "timestamp": "2025-10-14T08:18:10.988+0000"
+          "@timestamp": "2025-10-15T08:52:10.104Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890988]
+        "sort": [1760518330104]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "7-PM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "YKoR55kBVylH1Z_p23xw",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
-          "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.84",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890741186102",
-            "sessionid": "2313371063",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "log22-normal-alisg.tiktokv.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "34.96.106.127",
-            "dstintf": "port5",
-            "direction": "outgoing",
-            "sentbyte": "517",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://log22-normal-alisg.tiktokv.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "56658",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:11",
-            "dstcountry": "United States",
-            "rcvdbyte": "0"
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
           },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
           "rule": {
-            "firedtimes": 31123,
+            "firedtimes": 5749,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:11 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890741186102 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313371063 srcip=10.90.24.84 srcport=56658 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=34.96.106.127 dstport=443 dstcountry=\"United States\" dstintf=\"port5\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"log22-normal-alisg.tiktokv.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://log22-normal-alisg.tiktokv.com/\" sentbyte=517 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:09.786653 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518329.356989429",
+          "timestamp": "2025-10-15T08:52:09.880+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.983Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352277020",
-          "timestamp": "2025-10-14T08:18:10.983+0000"
+          "@timestamp": "2025-10-15T08:52:09.880Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890983]
+        "sort": [1760518329880]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "7ePM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_fER55kBhQV3Vnsg1xWF",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
           "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.66.181",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890672420599",
-            "sessionid": "2313370988",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "z-m-gateway.facebook.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "57.144.152.3",
-            "dstintf": "Inet-Icon",
-            "direction": "outgoing",
-            "sentbyte": "215",
-            "srcintf": "VLAN_301",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://z-m-gateway.facebook.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "48858",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:11",
-            "dstcountry": "Singapore",
-            "rcvdbyte": "0"
+            "protocol": "GET",
+            "srcip": "162.158.189.119",
+            "id": "403",
+            "url": "/"
           },
           "rule": {
-            "firedtimes": 31121,
+            "firedtimes": 19830,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:11 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890672420599 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370988 srcip=10.90.66.181 srcport=48858 srccountry=\"Reserved\" srcintf=\"VLAN_301\" srcintfrole=\"lan\" srcuuid=\"18e90266-9ebe-51f0-3130-c3fb416c11e7\" dstip=57.144.152.3 dstport=443 dstcountry=\"Singapore\" dstintf=\"Inet-Icon\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"z-m-gateway.facebook.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://z-m-gateway.facebook.com/\" sentbyte=215 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "162.158.189.119 - - [15/Oct/2025:15:52:07 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\"",
+          "id": "1760518328.356988081",
+          "timestamp": "2025-10-15T08:52:08.102+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.979Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352273518",
-          "timestamp": "2025-10-14T08:18:10.979+0000"
+          "@timestamp": "2025-10-15T08:52:08.102Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "city_name": "Seoul",
+            "country_name": "South Korea",
+            "region_name": "Seoul",
+            "location": { "lon": 126.9783, "lat": 37.5985 }
+          }
         },
-        "sort": [1760429890979]
+        "sort": [1760518328102]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "7OPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "JNMR55kBdMmPowyu02Kf",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
           "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.84",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890621655783",
-            "sessionid": "2313370978",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "log22-normal-alisg.tiktokv.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "34.96.106.127",
-            "dstintf": "port5",
-            "direction": "outgoing",
-            "sentbyte": "517",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://log22-normal-alisg.tiktokv.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "56652",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:11",
-            "dstcountry": "United States",
-            "rcvdbyte": "0"
+            "srcip": "162.158.189.119",
+            "srcport": "17710",
+            "id": "AH01276"
           },
           "rule": {
-            "firedtimes": 31120,
+            "firedtimes": 537,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:11 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890621655783 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370978 srcip=10.90.24.84 srcport=56652 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=34.96.106.127 dstport=443 dstcountry=\"United States\" dstintf=\"port5\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"log22-normal-alisg.tiktokv.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://log22-normal-alisg.tiktokv.com/\" sentbyte=517 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:07.424913 2025] [autoindex:error] [pid 4151425:tid 140053313484544] [client 162.158.189.119:17710] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518328.356987363",
+          "timestamp": "2025-10-15T08:52:08.089+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.976Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352271744",
-          "timestamp": "2025-10-14T08:18:10.976+0000"
+          "@timestamp": "2025-10-15T08:52:08.089Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "city_name": "Seoul",
+            "country_name": "South Korea",
+            "region_name": "Seoul",
+            "location": { "lon": 126.9783, "lat": 37.5985 }
+          }
         },
-        "sort": [1760429890976]
+        "sort": [1760518328089]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "6OPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "IdMR55kBdMmPowyu02Kf",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
-          "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.216",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890362411112",
-            "sessionid": "2313370780",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "z-m-gateway.facebook.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "31.13.95.40",
-            "dstintf": "Inet-Icon",
-            "direction": "outgoing",
-            "sentbyte": "215",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://z-m-gateway.facebook.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "34984",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:10",
-            "dstcountry": "Indonesia",
-            "rcvdbyte": "0"
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
           },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
           "rule": {
-            "firedtimes": 31116,
+            "firedtimes": 5744,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:10 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890362411112 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370780 srcip=10.90.24.216 srcport=34984 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=31.13.95.40 dstport=443 dstcountry=\"Indonesia\" dstintf=\"Inet-Icon\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"z-m-gateway.facebook.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://z-m-gateway.facebook.com/\" sentbyte=215 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:06.644149 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518327.356986158",
+          "timestamp": "2025-10-15T08:52:07.878+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.788Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352264726",
-          "timestamp": "2025-10-14T08:18:10.788+0000"
+          "@timestamp": "2025-10-15T08:52:07.878Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890788]
+        "sort": [1760518327878]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "6ePM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "ItMR55kBdMmPowyu02Kf",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
-          "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.84",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890306677344",
-            "sessionid": "2313370770",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "log22-normal-alisg.tiktokv.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "34.96.106.127",
-            "dstintf": "port5",
-            "direction": "outgoing",
-            "sentbyte": "517",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://log22-normal-alisg.tiktokv.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "56618",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:10",
-            "dstcountry": "United States",
-            "rcvdbyte": "0"
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
           },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
           "rule": {
-            "firedtimes": 31117,
+            "firedtimes": 5745,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:10 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890306677344 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370770 srcip=10.90.24.84 srcport=56618 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=34.96.106.127 dstport=443 dstcountry=\"United States\" dstintf=\"port5\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"log22-normal-alisg.tiktokv.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://log22-normal-alisg.tiktokv.com/\" sentbyte=517 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:07.424656 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518327.356986558",
+          "timestamp": "2025-10-15T08:52:07.878+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.783Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352266480",
-          "timestamp": "2025-10-14T08:18:10.783+0000"
+          "@timestamp": "2025-10-15T08:52:07.878Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890783]
+        "sort": [1760518327878]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "5-PM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "I9MR55kBdMmPowyu02Kf",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
-          "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.64",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429889979262998",
-            "sessionid": "2313370564",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "z-m-gateway.facebook.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "57.144.152.3",
-            "dstintf": "Inet-Icon",
-            "direction": "outgoing",
-            "sentbyte": "215",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://z-m-gateway.facebook.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "43438",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:10",
-            "dstcountry": "Singapore",
-            "rcvdbyte": "0"
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
           },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
           "rule": {
-            "firedtimes": 31115,
+            "firedtimes": 5746,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:10 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429889979262998 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370564 srcip=10.90.24.64 srcport=43438 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=57.144.152.3 dstport=443 dstcountry=\"Singapore\" dstintf=\"Inet-Icon\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"z-m-gateway.facebook.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://z-m-gateway.facebook.com/\" sentbyte=215 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:07.690584 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518327.356986963",
+          "timestamp": "2025-10-15T08:52:07.878+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.763Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352262972",
-          "timestamp": "2025-10-14T08:18:10.763+0000"
+          "@timestamp": "2025-10-15T08:52:07.878Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890763]
+        "sort": [1760518327878]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "4uPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "INMR55kBdMmPowyu02Kf",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
-          "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.24.84",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429890217118424",
-            "sessionid": "2313370733",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "log22-normal-alisg.tiktokv.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "34.96.106.127",
-            "dstintf": "Inet-Icon",
-            "direction": "outgoing",
-            "sentbyte": "517",
-            "srcintf": "VLAN_300",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://log22-normal-alisg.tiktokv.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "56614",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:10",
-            "dstcountry": "United States",
-            "rcvdbyte": "0"
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
           },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
           "rule": {
-            "firedtimes": 31110,
+            "firedtimes": 5743,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:10 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429890217118424 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370733 srcip=10.90.24.84 srcport=56614 srccountry=\"Reserved\" srcintf=\"VLAN_300\" srcintfrole=\"lan\" srcuuid=\"6f87bd5c-383e-51ef-b6f7-943284ee0620\" dstip=34.96.106.127 dstport=443 dstcountry=\"United States\" dstintf=\"Inet-Icon\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"log22-normal-alisg.tiktokv.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://log22-normal-alisg.tiktokv.com/\" sentbyte=517 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "[Wed Oct 15 15:52:06.031634 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518327.356985753",
+          "timestamp": "2025-10-15T08:52:07.865+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.729Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352254170",
-          "timestamp": "2025-10-14T08:18:10.729+0000"
+          "@timestamp": "2025-10-15T08:52:07.865Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
         },
-        "sort": [1760429890729]
+        "sort": [1760518327865]
       },
       {
-        "_index": "wazuh-alerts-4.x-2025.10.14",
-        "_id": "3uPM4ZkBhQV3VnsgYo7i",
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "PaoR55kBVylH1Z_pz3y1",
         "_score": null,
         "_source": {
-          "cluster": { "node": "worker03", "name": "wazuh" },
-          "agent": { "name": "wazuh3.worker", "id": "000" },
-          "manager": { "name": "wazuh3.worker" },
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
           "data": {
-            "devid": "FG6H1ETB22900118",
-            "msg": "URL belongs to a denied category in policy",
-            "srcip": "10.90.66.116",
-            "poluuid": "7acb0b54-6b84-51f0-ac11-a4392eeb202e",
-            "srcintfrole": "lan",
-            "dstport": "443",
-            "eventtime": "1760429889926337288",
-            "sessionid": "2313370457",
-            "type": "utm",
-            "srccountry": "Reserved",
-            "hostname": "z-m-gateway.facebook.com",
-            "policyid": "291",
-            "subtype": "webfilter",
-            "reqtype": "direct",
-            "action": "blocked",
-            "devname": "FGT-601E-PERTAMINA-PGE",
-            "dstip": "57.144.152.3",
-            "dstintf": "port5",
-            "direction": "outgoing",
-            "sentbyte": "215",
-            "srcintf": "VLAN_301",
-            "level": "warning",
-            "profile": "Blocking Aplikasi",
-            "url": "https://z-m-gateway.facebook.com/",
-            "vd": "root",
-            "dstintfrole": "wan",
-            "service": "HTTPS",
-            "proto": "6",
-            "srcport": "57328",
-            "eventtype": "ftgd_blk",
-            "logid": "0316013056",
-            "time": "15:18:10",
-            "dstcountry": "Singapore",
-            "rcvdbyte": "0"
+            "protocol": "GET",
+            "srcip": "108.162.227.38",
+            "id": "403",
+            "url": "/"
           },
           "rule": {
-            "firedtimes": 31106,
+            "firedtimes": 19829,
             "mail": false,
-            "level": 6,
-            "description": "Fortigate: Blocked URL belongs to a denied category in policy.",
-            "groups": ["fortigate", "syslog"],
-            "id": "81644"
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
           },
-          "decoder": { "name": "fortigate-firewall-v5" },
-          "full_log": "date=2025-10-14 time=15:18:10 devname=\"FGT-601E-PERTAMINA-PGE\" devid=\"FG6H1ETB22900118\" eventtime=1760429889926337288 tz=\"+0700\" logid=\"0316013056\" type=\"utm\" subtype=\"webfilter\" eventtype=\"ftgd_blk\" level=\"warning\" vd=\"root\" policyid=291 poluuid=\"7acb0b54-6b84-51f0-ac11-a4392eeb202e\" policytype=\"policy\" sessionid=2313370457 srcip=10.90.66.116 srcport=57328 srccountry=\"Reserved\" srcintf=\"VLAN_301\" srcintfrole=\"lan\" srcuuid=\"18e90266-9ebe-51f0-3130-c3fb416c11e7\" dstip=57.144.152.3 dstport=443 dstcountry=\"Singapore\" dstintf=\"port5\" dstintfrole=\"wan\" dstuuid=\"2ffd0d2c-7b7a-51ed-5318-d58ca16a533e\" proto=6 service=\"HTTPS\" hostname=\"z-m-gateway.facebook.com\" profile=\"Blocking Aplikasi\" action=\"blocked\" reqtype=\"direct\" url=\"https://z-m-gateway.facebook.com/\" sentbyte=215 rcvdbyte=0 direction=\"outgoing\" msg=\"URL belongs to a denied category in policy\" ratemethod=\"domain\" cat=37 catdesc=\"Social Networking\"",
+          "full_log": "108.162.227.38 - - [15/Oct/2025:15:52:05 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\"",
+          "id": "1760518326.356985212",
+          "timestamp": "2025-10-15T08:52:06.114+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
           "input": { "type": "log" },
-          "@timestamp": "2025-10-14T08:18:10.710Z",
-          "location": "10.90.0.11",
-          "id": "1760429890.1352247190",
-          "timestamp": "2025-10-14T08:18:10.710+0000"
+          "@timestamp": "2025-10-15T08:52:06.114Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "city_name": "Paris",
+            "country_name": "France",
+            "region_name": "Paris",
+            "location": { "lon": 2.3527, "lat": 48.8543 }
+          }
         },
-        "sort": [1760429890710]
+        "sort": [1760518326114]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "PKoR55kBVylH1Z_pz3y1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "protocol": "GET",
+            "srcip": "172.70.92.145",
+            "id": "403",
+            "url": "/"
+          },
+          "rule": {
+            "firedtimes": 19828,
+            "mail": false,
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "172.70.92.145 - - [15/Oct/2025:15:52:05 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\"",
+          "id": "1760518326.356984673",
+          "timestamp": "2025-10-15T08:52:06.100+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:06.100Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518326100]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "O6oR55kBVylH1Z_pz3y1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "108.162.227.38",
+            "srcport": "18776",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 536,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:52:05.563227 2025] [autoindex:error] [pid 4151425:tid 140053045049088] [client 108.162.227.38:18776] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518326.356983957",
+          "timestamp": "2025-10-15T08:52:06.097+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:06.097Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "city_name": "Paris",
+            "country_name": "France",
+            "region_name": "Paris",
+            "location": { "lon": 2.3527, "lat": 48.8543 }
+          }
+        },
+        "sort": [1760518326097]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "5_ER55kBhQV3VnsgyxXO",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "172.70.92.145",
+            "srcport": "18703",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 535,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:52:05.446518 2025] [autoindex:error] [pid 4151425:tid 140053019870976] [client 172.70.92.145:18703] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518326.356983243",
+          "timestamp": "2025-10-15T08:52:06.086+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:06.086Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518326086]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "5fER55kBhQV3VnsgyxXO",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5741,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:05.598132 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518325.356982438",
+          "timestamp": "2025-10-15T08:52:05.873+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:05.873Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518325873]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "5vER55kBhQV3VnsgyxXO",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5742,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:04.726309 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518325.356982838",
+          "timestamp": "2025-10-15T08:52:05.873+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:05.873Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518325873]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "5PER55kBhQV3VnsgyxXO",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5740,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:04.550704 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518325.356982038",
+          "timestamp": "2025-10-15T08:52:05.863+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:05.863Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518325863]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_dMR55kBdMmPowyux2Hl",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5738,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:03.500698 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518323.356981238",
+          "timestamp": "2025-10-15T08:52:03.874+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:03.874Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518323874]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_NMR55kBdMmPowyux2Hl",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5737,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:03.418576 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518323.356980833",
+          "timestamp": "2025-10-15T08:52:03.874+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:03.874Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518323874]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_tMR55kBdMmPowyux2Hl",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5739,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:02.455901 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518323.356981638",
+          "timestamp": "2025-10-15T08:52:03.874+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:03.874Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518323874]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "-9MR55kBdMmPowyux2Hl",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5736,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:02.051498 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518323.356980428",
+          "timestamp": "2025-10-15T08:52:03.861+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:03.861Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518323861]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "x_ER55kBhQV3VnsgwBUU",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5734,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:00.357169 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518321.356976225",
+          "timestamp": "2025-10-15T08:52:01.885+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:01.885Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518321885]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "xvER55kBhQV3VnsgwBUU",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5733,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:00.644275 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518321.356975820",
+          "timestamp": "2025-10-15T08:52:01.885+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:01.885Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518321885]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "yPER55kBhQV3VnsgwBUU",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5735,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:52:01.412232 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518321.356976625",
+          "timestamp": "2025-10-15T08:52:01.885+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:52:01.885Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518321885]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "nfER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5730,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:58.261963 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518319.356952673",
+          "timestamp": "2025-10-15T08:51:59.869+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:59.869Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518319869]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "nvER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5731,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:59.311889 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518319.356953073",
+          "timestamp": "2025-10-15T08:51:59.869+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:59.869Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518319869]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "n_ER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5732,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:59.324783 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518319.356953473",
+          "timestamp": "2025-10-15T08:51:59.869+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:59.869Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518319869]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "nPER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5729,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:57.996295 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518319.356952268",
+          "timestamp": "2025-10-15T08:51:59.857+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:59.857Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518319857]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "m_ER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "14586" },
+          "rule": {
+            "firedtimes": 5728,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:57.215592 2025] [:error] [pid 7502] [client 172.71.82.97:14586] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518317.356951868",
+          "timestamp": "2025-10-15T08:51:57.867+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:57.867Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518317867]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "mvER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5727,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:56.665467 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518317.356951463",
+          "timestamp": "2025-10-15T08:51:57.867+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:57.867Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518317867]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "mfER55kBhQV3VnsgtBVb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5726,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:56.162448 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518317.356951063",
+          "timestamp": "2025-10-15T08:51:57.854+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:57.854Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518317854]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "taoR55kBVylH1Z_ppHu9",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5722,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:53.884175 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518315.356949453",
+          "timestamp": "2025-10-15T08:51:55.862+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:55.862Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518315862]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "t6oR55kBVylH1Z_ppHu9",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5724,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:55.127948 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518315.356950258",
+          "timestamp": "2025-10-15T08:51:55.862+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:55.862Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518315862]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "tqoR55kBVylH1Z_ppHu9",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5723,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:54.082797 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518315.356949858",
+          "timestamp": "2025-10-15T08:51:55.862+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:55.862Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518315862]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "j9MR55kBdMmPowyuqGGh",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5725,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:55.225739 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518315.356950658",
+          "timestamp": "2025-10-15T08:51:55.862+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:55.862Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518315862]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "TPER55kBhQV3VnsgoBXT",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5720,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:52.583082 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518313.356928345",
+          "timestamp": "2025-10-15T08:51:53.863+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:53.863Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518313863]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "TfER55kBhQV3VnsgoBXT",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5721,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:53.038368 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518313.356928750",
+          "timestamp": "2025-10-15T08:51:53.863+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:53.863Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518313863]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "S_ER55kBhQV3VnsgoBXT",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5719,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:51.992880 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518313.356927945",
+          "timestamp": "2025-10-15T08:51:53.849+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:53.849Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518313849]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "hKoR55kBVylH1Z_pmXsD",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5717,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:51.277975 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518311.356907813",
+          "timestamp": "2025-10-15T08:51:51.861+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:51.861Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518311861]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "haoR55kBVylH1Z_pmXsD",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5718,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:49.913944 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518311.356908218",
+          "timestamp": "2025-10-15T08:51:51.861+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:51.861Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518311861]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "H_ER55kBhQV3VnsglRUY",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5716,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:50.949424 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518311.356907413",
+          "timestamp": "2025-10-15T08:51:51.860+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:51.860Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518311860]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "HvER55kBhQV3VnsglRUY",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5715,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:49.879999 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518311.356907008",
+          "timestamp": "2025-10-15T08:51:51.847+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:51.847Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518311847]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "a6oR55kBVylH1Z_pjXtK",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5714,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:48.867998 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518309.356885340",
+          "timestamp": "2025-10-15T08:51:49.858+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:49.858Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518309858]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "aqoR55kBVylH1Z_pjXtK",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5713,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:48.484958 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518309.356884935",
+          "timestamp": "2025-10-15T08:51:49.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:49.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518309848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_vER55kBhQV3VnsgiRRf",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5712,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:47.826150 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518307.356877609",
+          "timestamp": "2025-10-15T08:51:47.873+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:47.873Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518307873]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_fER55kBhQV3VnsgiRRf",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5711,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:47.178031 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518307.356877204",
+          "timestamp": "2025-10-15T08:51:47.860+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:47.860Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518307860]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "_PER55kBhQV3VnsgiRRf",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5710,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:46.774425 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518307.356876804",
+          "timestamp": "2025-10-15T08:51:47.859+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:47.859Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518307859]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "-_ER55kBhQV3VnsgiRRf",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5709,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:45.877072 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518307.356876399",
+          "timestamp": "2025-10-15T08:51:47.843+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:47.843Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518307843]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "QaoR55kBVylH1Z_pgXuQ",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "protocol": "GET",
+            "srcip": "104.23.176.13",
+            "id": "403",
+            "url": "/"
+          },
+          "rule": {
+            "firedtimes": 19827,
+            "mail": false,
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "104.23.176.13 - - [15/Oct/2025:15:51:46 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\"",
+          "id": "1760518306.356859852",
+          "timestamp": "2025-10-15T08:51:46.079+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:46.079Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518306079]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "3vER55kBhQV3VnsgfRSn",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "104.23.176.13",
+            "srcport": "17157",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 534,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:51:46.011046 2025] [autoindex:error] [pid 4151246:tid 140053019870976] [client 104.23.176.13:17157] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518306.356859138",
+          "timestamp": "2025-10-15T08:51:46.065+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:46.065Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518306065]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "3PER55kBhQV3VnsgfRSn",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5707,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:44.480260 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518305.356858333",
+          "timestamp": "2025-10-15T08:51:45.852+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:45.852Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518305852]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "2_ER55kBhQV3VnsgfRSn",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5706,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:44.693879 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518305.356857933",
+          "timestamp": "2025-10-15T08:51:45.852+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:45.852Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518305852]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "3fER55kBhQV3VnsgfRSn",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5708,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:45.730440 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518305.356858738",
+          "timestamp": "2025-10-15T08:51:45.852+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:45.852Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518305852]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "8NMR55kBdMmPowyueWC_",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "protocol": "GET",
+            "srcip": "172.71.124.243",
+            "id": "403",
+            "url": "/"
+          },
+          "rule": {
+            "firedtimes": 19826,
+            "mail": false,
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "172.71.124.243 - - [15/Oct/2025:15:51:43 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\"",
+          "id": "1760518304.356838065",
+          "timestamp": "2025-10-15T08:51:44.077+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:44.077Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518304077]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "GaoR55kBVylH1Z_pdXvV",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "172.71.124.243",
+            "srcport": "19849",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 533,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:51:43.802079 2025] [autoindex:error] [pid 4151246:tid 140053288306432] [client 172.71.124.243:19849] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518304.356837349",
+          "timestamp": "2025-10-15T08:51:44.077+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:44.077Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518304077]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "F6oR55kBVylH1Z_pdXvV",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5704,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:43.650813 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518303.356836544",
+          "timestamp": "2025-10-15T08:51:43.852+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:43.852Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518303852]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "GKoR55kBVylH1Z_pdXvV",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5705,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:43.074703 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518303.356836944",
+          "timestamp": "2025-10-15T08:51:43.852+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:43.852Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518303852]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "FqoR55kBVylH1Z_pdXvV",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5703,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:42.605102 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518303.356836144",
+          "timestamp": "2025-10-15T08:51:43.840+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:43.840Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518303840]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "sPER55kBhQV3VnsgcRTt",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "protocol": "GET",
+            "srcip": "172.71.124.243",
+            "id": "403",
+            "url": "/"
+          },
+          "rule": {
+            "firedtimes": 19825,
+            "mail": false,
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "172.71.124.243 - - [15/Oct/2025:15:51:41 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\"",
+          "id": "1760518302.356835603",
+          "timestamp": "2025-10-15T08:51:42.075+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:42.075Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518302075]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "r_ER55kBhQV3VnsgcRTt",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "172.71.124.243",
+            "srcport": "19849",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 532,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:51:41.498610 2025] [autoindex:error] [pid 4151246:tid 140054009718528] [client 172.71.124.243:19849] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518302.356834887",
+          "timestamp": "2025-10-15T08:51:42.061+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:42.061Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518302061]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "rfER55kBhQV3VnsgcRTt",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5701,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:41.554752 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518301.356834082",
+          "timestamp": "2025-10-15T08:51:41.850+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:41.850Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518301850]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "v9MR55kBdMmPowyubmAF",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5700,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:40.505613 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518301.356833682",
+          "timestamp": "2025-10-15T08:51:41.850+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:41.850Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518301850]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "rvER55kBhQV3VnsgcRTt",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5702,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:41.767886 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518301.356834482",
+          "timestamp": "2025-10-15T08:51:41.850+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:41.850Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518301850]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "vtMR55kBdMmPowyubmAF",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5699,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:40.460881 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518301.356833277",
+          "timestamp": "2025-10-15T08:51:41.837+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:41.837Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518301837]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "8qoR55kBVylH1Z_panob",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "protocol": "GET",
+            "srcip": "172.71.124.243",
+            "id": "403",
+            "url": "/"
+          },
+          "rule": {
+            "firedtimes": 19824,
+            "mail": false,
+            "level": 5,
+            "pci_dss": ["6.5", "11.4"],
+            "tsc": [
+              "CC6.6",
+              "CC7.1",
+              "CC8.1",
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ],
+            "description": "Web server 400 error code.",
+            "groups": ["web", "accesslog", "attack"],
+            "id": "31101",
+            "nist_800_53": ["SA.11", "SI.4"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "172.71.124.243 - - [15/Oct/2025:15:51:39 +0700] \"GET / HTTP/1.1\" 403 199691 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\"",
+          "id": "1760518300.356811448",
+          "timestamp": "2025-10-15T08:51:40.072+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "name": "web-accesslog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:40.072Z",
+          "location": "/var/log/httpd/access_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518300072]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "hvER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "68.183.188.130",
+            "name": "SVR-HSEPASS-DO",
+            "id": "012"
+          },
+          "data": {
+            "srcip": "172.71.124.243",
+            "srcport": "19849",
+            "id": "AH01276"
+          },
+          "rule": {
+            "firedtimes": 531,
+            "mail": false,
+            "level": 5,
+            "hipaa": ["164.312.b"],
+            "pci_dss": ["6.5.8", "10.2.4"],
+            "tsc": ["CC6.6", "CC7.1", "CC6.1", "CC6.8", "CC7.2", "CC7.3"],
+            "description": "Apache: Attempt to access forbidden directory index.",
+            "groups": ["apache", "web", "access_denied"],
+            "mitre": {
+              "technique": ["Exploit Public-Facing Application"],
+              "id": ["T1190"],
+              "tactic": ["Initial Access"]
+            },
+            "id": "30306",
+            "nist_800_53": ["SA.11", "AU.14", "AC.7"],
+            "gdpr": ["IV_35.7.d"]
+          },
+          "full_log": "[Wed Oct 15 15:51:39.622078 2025] [autoindex:error] [pid 4151246:tid 140054043289344] [client 172.71.124.243:19849] AH01276: Cannot serve directory /var/www/html/devapp/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive",
+          "id": "1760518300.356810732",
+          "timestamp": "2025-10-15T08:51:40.058+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:40.058Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518300058]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "hfER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5698,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:39.084943 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518299.356810327",
+          "timestamp": "2025-10-15T08:51:39.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:39.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518299848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "hPER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5697,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:39.455407 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518299.356809927",
+          "timestamp": "2025-10-15T08:51:39.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:39.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518299848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "g_ER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5696,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:38.409184 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518299.356809527",
+          "timestamp": "2025-10-15T08:51:39.834+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:39.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518299834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "gPER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5695,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:37.363061 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518297.356802205",
+          "timestamp": "2025-10-15T08:51:37.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:37.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518297848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "fvER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5693,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:36.375738 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518297.356801395",
+          "timestamp": "2025-10-15T08:51:37.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:37.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518297848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "f_ER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.70.142.177", "srcport": "17653" },
+          "rule": {
+            "firedtimes": 5694,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:37.710002 2025] [:error] [pid 7931] [client 172.70.142.177:17653] PHP Notice:  Trying to get property of non-object in /var/www/html/audit1/kirimnotif.php on line 20",
+          "id": "1760518297.356801800",
+          "timestamp": "2025-10-15T08:51:37.848+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:37.848Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518297848]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "ffER55kBhQV3VnsgZhQ1",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker01", "name": "wazuh" },
+          "agent": {
+            "ip": "128.199.185.169",
+            "name": "SVR-PAS-NotifMevent-DO",
+            "id": "013"
+          },
+          "data": { "srcip": "172.71.82.97", "srcport": "15691" },
+          "rule": {
+            "firedtimes": 5692,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 15:51:36.314559 2025] [:error] [pid 7932] [client 172.71.82.97:15691] PHP Notice:  Trying to get property of non-object in /var/www/html/audit/kirimnotif.php on line 20",
+          "id": "1760518297.356800995",
+          "timestamp": "2025-10-15T08:51:37.832+0000",
+          "manager": { "name": "wazuh1.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:37.832Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518297832]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "ZfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25564,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150788 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 31 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549728735",
+          "timestamp": "2025-10-15T08:51:36.836+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.836Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296836]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "YPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25559,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150783 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 29 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549726540",
+          "timestamp": "2025-10-15T08:51:36.834+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "YfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25560,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150785 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 30 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549726979",
+          "timestamp": "2025-10-15T08:51:36.834+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "YvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25561,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150780 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 28 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549727418",
+          "timestamp": "2025-10-15T08:51:36.834+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "Y_ER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25562,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150778 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 27 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549727857",
+          "timestamp": "2025-10-15T08:51:36.834+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "ZPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25563,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150775 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 26 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549728296",
+          "timestamp": "2025-10-15T08:51:36.834+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.834Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296834]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "X_ER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25558,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150773 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 25 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549726101",
+          "timestamp": "2025-10-15T08:51:36.823+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.823Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296823]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "WvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25553,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150763 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 21 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549723906",
+          "timestamp": "2025-10-15T08:51:36.821+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.821Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296821]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "W_ER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25554,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150765 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 22 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549724345",
+          "timestamp": "2025-10-15T08:51:36.821+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.821Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296821]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "XPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25555,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150760 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 20 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549724784",
+          "timestamp": "2025-10-15T08:51:36.821+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.821Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296821]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "XvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25557,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150770 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 24 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549725662",
+          "timestamp": "2025-10-15T08:51:36.821+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.821Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296821]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "XfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25556,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150768 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 23 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549725223",
+          "timestamp": "2025-10-15T08:51:36.821+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.821Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296821]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "WfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25552,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150758 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 19 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549723467",
+          "timestamp": "2025-10-15T08:51:36.810+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.810Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296810]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "VvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25549,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150739 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 31 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549722150",
+          "timestamp": "2025-10-15T08:51:36.809+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.809Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296809]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "V_ER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25550,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150750 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 17 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549722589",
+          "timestamp": "2025-10-15T08:51:36.809+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.809Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296809]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "VfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25548,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150748 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 16 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549721711",
+          "timestamp": "2025-10-15T08:51:36.809+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.809Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296809]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "WPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25551,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150755 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 18 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549723028",
+          "timestamp": "2025-10-15T08:51:36.809+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.809Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296809]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "VPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25547,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150737 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 30 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549721272",
+          "timestamp": "2025-10-15T08:51:36.809+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.809Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296809]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "SPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25535,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150714 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 21 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549716004",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "SvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25537,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150719 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 23 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549716882",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "UPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25543,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150732 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 28 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549719516",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "U_ER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25546,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150681 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 28 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549720833",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "y6oR55kBVylH1Z_pWnpd",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25532,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150706 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 18 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549714687",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "zKoR55kBVylH1Z_pWnpd",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25533,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150711 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 20 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549715126",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "SfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25536,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150709 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 19 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549716443",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "TPER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25539,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150724 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 25 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549717760",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "TfER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25540,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150693 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 31 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549718199",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
+      },
+      {
+        "_index": "wazuh-alerts-4.x-2025.10.15",
+        "_id": "TvER55kBhQV3VnsgWhRb",
+        "_score": null,
+        "_source": {
+          "cluster": { "node": "worker04", "name": "wazuh" },
+          "agent": {
+            "ip": "139.59.238.98",
+            "name": "SVR-PEKKAMYPGE-DO",
+            "id": "015"
+          },
+          "data": { "srcip": "172.71.124.52", "srcport": "18637" },
+          "rule": {
+            "firedtimes": 25541,
+            "mail": false,
+            "level": 5,
+            "description": "Apache: PHP Notice in Apache log",
+            "groups": ["apache", "web"],
+            "id": "30318"
+          },
+          "full_log": "[Wed Oct 15 08:51:36.150729 2025] [:error] [pid 29542] [client 172.71.124.52:18637] PHP Notice:  Undefined offset: 27 in /var/www/html/hsse/sec/dasb02.php on line 78, referer: https://patroli86.mypge.id/Depan?g=dasb01&a=KRH",
+          "id": "1760518296.549718638",
+          "timestamp": "2025-10-15T08:51:36.799+0000",
+          "manager": { "name": "wazuh4.worker" },
+          "decoder": { "parent": "apache-errorlog", "name": "apache-errorlog" },
+          "input": { "type": "log" },
+          "@timestamp": "2025-10-15T08:51:36.799Z",
+          "location": "/var/log/httpd/error_log",
+          "GeoLocation": {
+            "country_name": "United States",
+            "location": { "lon": -97.822, "lat": 37.751 }
+          }
+        },
+        "sort": [1760518296799]
       }
     ]
   }
