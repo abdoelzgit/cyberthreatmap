@@ -5,9 +5,9 @@ const { Client } = require('pg');
 const pgConfig = {
   host: 'localhost',
   port: 5432,
-  database: 'wazuh_alerts',
-  user: 'your_username', // Ganti dengan username PostgreSQL Anda
-  password: 'your_password' // Ganti dengan password PostgreSQL Anda
+  database: 'Databases',
+  user: 'postgres',
+  password: '123'
 };
 
 // Fungsi untuk memproses dan upload data
@@ -56,8 +56,10 @@ async function processAndUploadData() {
       )
     `);
 
-    // 6. Clear existing data (optional - hapus jika ingin replace)
-    // await client.query('TRUNCATE TABLE filtered_alerts');
+    // 6. Clear existing data to prevent duplicates
+    console.log('🧹 Clearing existing data to prevent duplicates...');
+    await client.query('TRUNCATE TABLE filtered_alerts');
+    console.log('✅ Existing data cleared');
 
     // 7. Bulk insert menggunakan parameterized query
     console.log('💾 Uploading data to database...');

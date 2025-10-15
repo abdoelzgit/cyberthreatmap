@@ -95,21 +95,33 @@ function computeInterceptPoint(source, target, center) {
   };
 }
 
-// ====================================================
-// Komponen Utama
-// ====================================================
-export default function GlobeSocketMap() {
-  const [tick, setTick] = useState(Date.now());
-  const socketRef = useRef(null);
-  const viewerRef = useRef(null);
-  const centersRef = useRef([]);
-  const routesRef = useRef(new Map());
-  const attackRoutesRef = useRef(new Map());
-  const defenseRoutesRef = useRef(new Map());
-  const explosionsRef = useRef(new Map());
-  const barriersRef = useRef([]);
-  const initialFlyDoneRef = useRef(false);
-  const rafRef = useRef(null);
+  // ====================================================
+  // Komponen Utama
+  // ====================================================
+  export default function GlobeSocketMap() {
+    const [tick, setTick] = useState(Date.now());
+    const socketRef = useRef(null);
+    const viewerRef = useRef(null);
+    const centersRef = useRef([]);
+    const routesRef = useRef(new Map());
+    const attackRoutesRef = useRef(new Map());
+    const defenseRoutesRef = useRef(new Map());
+    const explosionsRef = useRef(new Map());
+    const barriersRef = useRef([]);
+    const initialFlyDoneRef = useRef(false);
+    const rafRef = useRef(null);
+
+    // Fungsi untuk kembali ke lokasi server (pusat pertahanan pertama)
+    const handleRecenterMap = () => {
+      const viewer = viewerRef.current?.cesiumElement;
+      if (viewer && centersRef.current.length > 0) {
+        const firstCenter = centersRef.current[0];
+        viewer.camera.flyTo({
+          destination: Cartesian3.fromDegrees(firstCenter.lng, firstCenter.lat, 800000),
+          duration: 1.5,
+        });
+      }
+    };
 
   // Kamera awal
   useEffect(() => {
@@ -153,7 +165,7 @@ export default function GlobeSocketMap() {
       setTick(Date.now());
     });
 
-    // ATTACK-EVENT: buat route dan jadwalkan peluncuran interceptor dari center terbaik
+    // ATTACK-EVENT: hanya buat route awal, biarkan server mengatur interceptor
     socketRef.current.on("attack-event", (e) => {
       const now = Date.now();
       if (!e?.source || !e?.target) return;
@@ -164,14 +176,6 @@ export default function GlobeSocketMap() {
       );
       const color = e.color ? Color.fromCssColorString(e.color) : Color.ORANGE;
 
-      // IMPORTANT: arahkan rudal musuh FROM source -> target (pakai e.target as position if lat/lng present)
-      // If server's e.target is a center object with lat/lng, use that; else fallback to provided coords
-      const targetLng =
-        e.target.lng ?? e.target.lon ?? e.target.longitude ?? e.target.lon;
-      const targetLat =
-        e.target.lat ?? e.target.lat ?? e.target.latitude ?? e.target.lat;
-
-      // gunakan e.target.lng / lat as provided originally (keamanan: fallback to e.target.lng)
       const positions = geodesicPositions(
         e.source.lng,
         e.source.lat,
@@ -181,7 +185,7 @@ export default function GlobeSocketMap() {
       );
       const id = `atk-${e.id}-${now}`;
 
-      // store the route object and also a currentPosition field updated per-frame
+      // Store attack route - will be updated by server via attack-update
       attackRoutesRef.current.set(id, {
         id,
         positions,
@@ -190,137 +194,82 @@ export default function GlobeSocketMap() {
         color,
         source: { lon: e.source.lng, lat: e.source.lat },
         target: { lon: e.target.lng, lat: e.target.lat },
-        interceptPoint: e.interceptPoint || null,
-        attackTimeToInterceptMs: e.attackTimeToInterceptMs || null,
-        currentPosition: null,
+        currentPosition: positions[0], // start at source
+        frac: 0, // current fraction
+        attackId: e.id, // link to server attack ID
       });
 
-      // pilih center terbaik: paling mungkin intercept
-      if (centersRef.current.length > 0) {
-        let best = null;
-        for (const c of centersRef.current) {
-          const ip = computeInterceptPoint(e.source, e.target, c);
-
-          const distCenterToIntercept = haversine(c.lat, c.lng, ip.lat, ip.lng);
-          const distAttackToIntercept = haversine(
-            e.source.lat,
-            e.source.lng,
-            ip.lat,
-            ip.lng
-          );
-
-          const attackTimeToInterceptMs =
-            (distAttackToIntercept / ATTACK_SPEED_MPS) * 1000;
-          const interceptorTimeMs =
-            (distCenterToIntercept / INTERCEPTOR_SPEED_MPS) * 1000;
-
-          const willIntercept = interceptorTimeMs <= attackTimeToInterceptMs;
-          const delay = Math.max(
-            0,
-            attackTimeToInterceptMs - interceptorTimeMs
-          );
-
-          if (
-            !best ||
-            (willIntercept && !best.willIntercept) ||
-            (willIntercept === best.willIntercept &&
-              interceptorTimeMs < best.interceptorTimeMs)
-          ) {
-            best = {
-              center: c,
-              ip,
-              distCenterToIntercept,
-              distAttackToIntercept,
-              interceptorTimeMs,
-              attackTimeToInterceptMs,
-              delay,
-              willIntercept,
-            };
-          }
-        }
-
-        if (best) {
-          // schedule client-side defense launch so visuals align perfectly
-          const launchDelay = Math.round(best.delay); // ms
-          setTimeout(() => {
-            const defId = `def-${id}-${best.center.id}-${Date.now()}`;
-            const pos = geodesicPositions(
-              best.center.lng,
-              best.center.lat,
-              best.ip.lng,
-              best.ip.lat,
-              160
-            );
-            const defDuration = Math.max(
-              1000,
-              Math.min(8000, best.interceptorTimeMs || 3000)
-            );
-            defenseRoutesRef.current.set(defId, {
-              id: defId,
-              positions: pos,
-              createdAt: Date.now(),
-              duration: defDuration,
-              color: Color.CYAN,
-              source: best.center,
-              target: best.ip,
-              currentPosition: null,
-            });
-
-            // force immediate render so it appears without sticky frames
-            setTick(Date.now());
-          }, launchDelay);
-        }
-      }
-
+      console.log(`🚀 ATTACK ROUTE CREATED: ${id} from ${e.source.id} to ${e.target.id}`);
       setTick(Date.now());
     });
 
-    // Keep server-initiated defense-launch handler (honor intercept point if provided)
+    // DEFENSE-LAUNCH: Create interceptor route from server data
     socketRef.current.on("defense-launch", (p) => {
       console.log("🛡️ RECEIVED defense-launch:", p.simId, "from", p.center.id);
-      const intercept = p.interceptPoint || p.threat;
-      const id = `def-${p.id}-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 6)}`;
-      const pos = geodesicPositions(
+
+      // Calculate positions from center to target (server already calculated intercept point)
+      const positions = geodesicPositions(
         p.center.lng,
         p.center.lat,
-        intercept.lng,
-        intercept.lat,
+        p.threat.lng, // target of attack
+        p.threat.lat,
         160
       );
-      const duration = Math.max(
-        1000,
-        Math.min(8000, p.interceptorTimeMs || 3500)
-      );
-      const delay = p.delay || 0;
-      setTimeout(() => {
-        defenseRoutesRef.current.set(id, {
-          id,
-          positions: pos,
-          createdAt: Date.now(),
-          duration,
-          color: Color.CYAN,
-          source: p.center,
-          target: intercept,
-          currentPosition: null,
-        });
-        console.log("🚀 DEFENSE ROUTE CREATED:", id, "positions:", pos.length);
-        setTick(Date.now());
-      }, delay);
+
+      const id = `def-${p.simId}`;
+
+      defenseRoutesRef.current.set(id, {
+        id,
+        positions,
+        createdAt: p.launchTime,
+        duration: p.interceptorTimeMs,
+        color: Color.CYAN,
+        source: p.center,
+        target: p.threat,
+        currentPosition: positions[0], // start at center
+        frac: 0, // current fraction
+        simId: p.simId, // link to server simulation ID
+      });
+
+      console.log(`🚀 DEFENSE ROUTE CREATED: ${id} from ${p.center.id} to intercept missile`);
+      setTick(Date.now());
     });
 
-    // Add intercept-result handler for debugging
+    // ATTACK-UPDATE: Update attack position from server
+    socketRef.current.on("attack-update", (update) => {
+      // Find the attack route by attackId
+      for (const [key, route] of attackRoutesRef.current) {
+        if (route.attackId === update.id) {
+          // Update position based on fraction from server
+          const idx = Math.floor(update.frac * (route.positions.length - 1));
+          route.currentPosition = route.positions[idx] || route.positions[route.positions.length - 1];
+          route.frac = update.frac;
+          break;
+        }
+      }
+    });
+
+    // DEFENSE-UPDATE: Update defense position from server
+    socketRef.current.on("defense-update", (update) => {
+      // Find the defense route by simId
+      for (const [key, route] of defenseRoutesRef.current) {
+        if (route.simId === update.simId) {
+          // Update position based on fraction from server
+          const idx = Math.floor(update.fracIntercept * (route.positions.length - 1));
+          route.currentPosition = route.positions[idx] || route.positions[route.positions.length - 1];
+          route.frac = update.fracIntercept;
+          break;
+        }
+      }
+    });
+
+    // INTERCEPT-RESULT: Handle interception results
     socketRef.current.on("intercept-result", (result) => {
       console.log("💥 RECEIVED intercept-result:", result.simId, "intercepted:", result.intercepted, "distance:", result.collisionDistance || "N/A");
       if (result.intercepted) {
-        // Force immediate cleanup of both attack and defense routes
-        const attackId = result.attackId;
-        const defenseId = result.simId;
-
         // Remove attack route
         attackRoutesRef.current.forEach((route, key) => {
-          if (key.includes(attackId)) {
+          if (route.attackId === result.attackId) {
             console.log("🗑️ REMOVING ATTACK ROUTE:", key);
             attackRoutesRef.current.delete(key);
           }
@@ -328,7 +277,7 @@ export default function GlobeSocketMap() {
 
         // Remove defense route
         defenseRoutesRef.current.forEach((route, key) => {
-          if (key.includes(defenseId)) {
+          if (route.simId === result.simId) {
             console.log("🗑️ REMOVING DEFENSE ROUTE:", key);
             defenseRoutesRef.current.delete(key);
           }
@@ -348,7 +297,7 @@ export default function GlobeSocketMap() {
   }, []);
 
   // ====================================================
-  // Per-frame animation + collision detection (requestAnimationFrame)
+  // Per-frame animation (positions updated by server events)
   // ====================================================
   useEffect(() => {
     let last = performance.now();
@@ -359,62 +308,21 @@ export default function GlobeSocketMap() {
 
       const nowMs = Date.now();
 
-      // update currentPosition for each attack route
+      // Only handle cleanup for finished routes - positions are updated by server
       for (const [k, r] of attackRoutesRef.current) {
-        const elapsed = nowMs - r.createdAt;
-        const t = Math.min(Math.max(elapsed / r.duration, 0), 1);
-        const idx = Math.floor(t * (r.positions.length - 1));
-        r.currentPosition =
-          r.positions[idx] || r.positions[r.positions.length - 1];
-
-        // if it finished, schedule removal (keeps same behavior as before)
-        if (t >= 1) {
-          // remove soon (keep one extra frame)
+        if (r.frac >= 1) {
           attackRoutesRef.current.delete(k);
         }
       }
 
-      // update currentPosition for each defense route
       for (const [k, r] of defenseRoutesRef.current) {
-        const elapsed = nowMs - r.createdAt;
-        const t = Math.min(Math.max(elapsed / r.duration, 0), 1);
-        const idx = Math.floor(t * (r.positions.length - 1));
-        r.currentPosition =
-          r.positions[idx] || r.positions[r.positions.length - 1];
-
-        if (t >= 1) {
+        if (r.frac >= 1) {
           defenseRoutesRef.current.delete(k);
         }
       }
 
-      // collision detection: compare every attack vs every defense (small N expected)
-      let collisionHappened = false;
-      const attacks = Array.from(attackRoutesRef.current.values());
-      const defenses = Array.from(defenseRoutesRef.current.values());
-
-      for (const atk of attacks) {
-        if (!atk.currentPosition) continue;
-        for (const def of defenses) {
-          if (!def.currentPosition) continue;
-          const dist = Cartesian3.distance(
-            atk.currentPosition,
-            def.currentPosition
-          );
-          if (dist < COLLISION_THRESHOLD) {
-            // remove both immediately
-            attackRoutesRef.current.delete(atk.id);
-            defenseRoutesRef.current.delete(def.id);
-            collisionHappened = true;
-            // break inner; continue checking other pairs
-            break;
-          }
-        }
-      }
-
-      // If collision happened, force render immediately
-      if (collisionHappened) setTick(Date.now());
-      // otherwise, occasionally update tick so CallbackPropertys re-evaluate
-      else if (nowMs % 200 < 20) setTick(Date.now()); // light periodic update (~every 200ms)
+      // Force periodic render updates for smooth animation
+      if (nowMs % 100 < 10) setTick(Date.now()); // ~every 100ms
 
       rafRef.current = requestAnimationFrame(frame);
     }
@@ -430,7 +338,29 @@ export default function GlobeSocketMap() {
   // ====================================================
   return (
     <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      
+
+      {/* Tombol Recenter Map */}
+      <button
+        onClick={handleRecenterMap}
+        style={{
+          position: "absolute",
+          top: "5px",
+          right: "200px",
+          zIndex: 1000,
+          padding: "10px 15px",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          fontSize: "14px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+        }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+      >
+        Recenter Map
+      </button>
 
       <Viewer full ref={viewerRef} timeline={false} animation={false}>
         {/* Defense Centers */}
@@ -483,13 +413,7 @@ export default function GlobeSocketMap() {
             return r.positions[Math.floor(t * (r.positions.length - 1))];
           }, false);
 
-          const trailColor = new Cesium.ColorMaterialProperty(
-            new Cesium.CallbackProperty(() => {
-              const t = (Date.now() - r.createdAt) / r.duration;
-              const alpha = 0.2 + 0.8 * Math.sin(t * Math.PI);
-              return Cesium.Color.ORANGE.withAlpha(alpha);
-            }, false)
-          );
+          const trailColor = Cesium.Color.ORANGE.withAlpha(0.8);
 
           return (
             <Entity key={r.id}>

@@ -62,10 +62,10 @@ function getPrivateIPLocation(ip) {
 // Fungsi untuk mendapatkan geolocation IP public menggunakan API
 async function getPublicIPLocation(ip) {
   return new Promise((resolve, reject) => {
-    // Menggunakan ipapi.co (gratis, tanpa API key)
-    const url = `https://ipapi.co/${ip}/json/`;
+    // Menggunakan ipinfo.io (gratis dengan API key terbatas)
+    const url = `https://ipinfo.io/${ip}/json`;
 
-    https.get(url, { timeout: 10000 }, (res) => {
+    https.get(url, { timeout: 15000 }, (res) => {
       let data = '';
 
       res.on('data', (chunk) => {
@@ -77,12 +77,15 @@ async function getPublicIPLocation(ip) {
           const response = JSON.parse(data);
 
           if (response && !response.error) {
+            // Parse lokasi dari response ipinfo.io
+            const [lat, lng] = response.loc ? response.loc.split(',') : [0, 0];
+
             const location = {
               ip: ip,
-              country: response.country_name || 'Unknown',
+              country: response.country || 'Unknown',
               city: response.city || 'Unknown',
-              lat: parseFloat(response.latitude) || 0,
-              lng: parseFloat(response.longitude) || 0,
+              lat: parseFloat(lat) || 0,
+              lng: parseFloat(lng) || 0,
               isp: response.org || 'Unknown'
             };
 
@@ -163,6 +166,8 @@ async function addGeolocationColumns() {
     // Tambahkan kolom geolocation jika belum ada
     await client.query(`
       ALTER TABLE filtered_alerts
+      ADD COLUMN IF NOT EXISTS src_ip_type VARCHAR(10) DEFAULT 'unknown',
+      ADD COLUMN IF NOT EXISTS dst_ip_type VARCHAR(10) DEFAULT 'unknown',
       ADD COLUMN IF NOT EXISTS src_country VARCHAR(100),
       ADD COLUMN IF NOT EXISTS src_city VARCHAR(100),
       ADD COLUMN IF NOT EXISTS src_lat DECIMAL(10,6),
@@ -226,17 +231,21 @@ async function updateGeolocationsManually() {
         await client.query(`
           UPDATE filtered_alerts
           SET
-            src_country = $1,
-            src_city = $2,
-            src_lat = $3,
-            src_lng = $4,
-            dst_country = $5,
-            dst_city = $6,
-            dst_lat = $7,
-            dst_lng = $8
-          WHERE srcip = $9 AND dstip = $10
+            src_ip_type = $1,
+            src_country = $2,
+            src_city = $3,
+            src_lat = $4,
+            src_lng = $5,
+            dst_ip_type = $6,
+            dst_country = $7,
+            dst_city = $8,
+            dst_lat = $9,
+            dst_lng = $10
+          WHERE srcip = $11 AND dstip = $12
         `, [
+          isPrivateIP(row.srcip) ? 'private' : 'public',
           srcGeo.country, srcGeo.city, srcGeo.lat, srcGeo.lng,
+          isPrivateIP(row.dstip) ? 'private' : 'public',
           dstGeo.country, dstGeo.city, dstGeo.lat, dstGeo.lng,
           row.srcip, row.dstip
         ]);
@@ -302,15 +311,15 @@ async function getAttackLocationsWithGeo() {
         ip: row.srcip,
         country: row.src_country,
         city: row.src_city,
-        lat: row.src_lat,
-        lng: row.src_lng
+        lat: parseFloat(row.src_lat),
+        lng: parseFloat(row.src_lng)
       },
       target: {
         ip: row.dstip,
         country: row.dst_country,
         city: row.dst_city,
-        lat: row.dst_lat,
-        lng: row.dst_lng
+        lat: parseFloat(row.dst_lat),
+        lng: parseFloat(row.dst_lng)
       },
       alertCount: row.alert_count,
       level: row.level
@@ -326,6 +335,118 @@ async function getAttackLocationsWithGeo() {
   }
 }
 
+// Fungsi untuk mendapatkan centers berdasarkan dstip (target servers)
+async function getCentersFromDatabase() {
+  const client = new Client(pgConfig);
+
+  try {
+    console.log('🏢 Fetching centers from database...');
+    await client.connect();
+
+    const result = await client.query(`
+      SELECT DISTINCT
+        dstip,
+        dst_country,
+        dst_city,
+        dst_lat,
+        dst_lng,
+        COUNT(*) as attack_count
+      FROM filtered_alerts
+      WHERE dst_lat IS NOT NULL AND dst_lng IS NOT NULL
+      GROUP BY dstip, dst_country, dst_city, dst_lat, dst_lng
+      ORDER BY attack_count DESC
+      LIMIT 10
+    `);
+
+    console.log(`🏢 Found ${result.rows.length} center locations from database`);
+
+    // Format centers untuk simulasi
+    const centers = result.rows.map((row, index) => ({
+      id: `${row.dst_city || 'Unknown'} Server (${row.dstip})`,
+      lat: parseFloat(row.dst_lat),
+      lng: parseFloat(row.dst_lng),
+      ip: row.dstip,
+      city: row.dst_city,
+      country: row.dst_country,
+      attack_count: row.attack_count
+    }));
+
+    return centers;
+
+  } catch (error) {
+    console.error('❌ Failed to fetch centers:', error.message);
+    return [];
+  } finally {
+    await client.end();
+  }
+}
+
+// Fungsi untuk mendapatkan historical attacks dari database
+async function getHistoricalAttacks(limit = 50) {
+  const client = new Client(pgConfig);
+
+  try {
+    console.log('📜 Fetching historical attacks from database...');
+    await client.connect();
+
+    const result = await client.query(`
+      SELECT
+        id,
+        srcip,
+        dstip,
+        src_country,
+        src_city,
+        src_lat,
+        src_lng,
+        dst_country,
+        dst_city,
+        dst_lat,
+        dst_lng,
+        level,
+        time,
+        created_at
+      FROM filtered_alerts
+      WHERE src_lat IS NOT NULL AND dst_lat IS NOT NULL
+      ORDER BY created_at DESC
+      LIMIT $1
+    `, [limit]);
+
+    console.log(`📜 Found ${result.rows.length} historical attacks from database`);
+
+    // Format attacks untuk simulasi
+    const attacks = result.rows.map(row => ({
+      id: row.id,
+      attackType: 'Cyber Attack', // Default attack type since no signature/category columns
+      source: {
+        ip: row.srcip,
+        country: row.src_country,
+        city: row.src_city,
+        lat: parseFloat(row.src_lat),
+        lng: parseFloat(row.src_lng)
+      },
+      target: {
+        ip: row.dstip,
+        country: row.dst_country,
+        city: row.dst_city,
+        lat: parseFloat(row.dst_lat),
+        lng: parseFloat(row.dst_lng)
+      },
+      threatLevel: row.level || 'Medium',
+      timestamp: row.created_at || row.time,
+      signature: 'Unknown',
+      category: 'Unknown'
+    }));
+
+    return attacks;
+
+  } catch (error) {
+    console.error('❌ Failed to fetch historical attacks:', error.message);
+    return [];
+  } finally {
+    await client.end();
+  }
+}
+
 // Fungsi untuk menampilkan data geolocation yang sudah ada
 async function showCurrentGeolocations() {
   const client = new Client(pgConfig);
@@ -335,7 +456,7 @@ async function showCurrentGeolocations() {
     await client.connect();
 
     const result = await client.query(`
-      SELECT srcip, dstip, src_country, src_city, src_lat, src_lng,
+      SELECT srcip, dstip, src_ip_type, dst_ip_type, src_country, src_city, src_lat, src_lng,
              dst_country, dst_city, dst_lat, dst_lng
       FROM filtered_alerts
       WHERE src_lat IS NOT NULL AND dst_lat IS NOT NULL
@@ -344,8 +465,8 @@ async function showCurrentGeolocations() {
 
     console.log('\n📍 Attack Routes:');
     result.rows.forEach((row, index) => {
-      console.log(`${index + 1}. ${row.srcip} (${row.src_city}, ${row.src_country}) [${row.src_lat}, ${row.src_lng}]`);
-      console.log(`   → ${row.dstip} (${row.dst_city}, ${row.dst_country}) [${row.dst_lat}, ${row.dst_lng}]\n`);
+      console.log(`${index + 1}. ${row.srcip} (${row.src_ip_type}) (${row.src_city}, ${row.src_country}) [${row.src_lat}, ${row.src_lng}]`);
+      console.log(`   → ${row.dstip} (${row.dst_ip_type}) (${row.dst_city}, ${row.dst_country}) [${row.dst_lat}, ${row.dst_lng}]\n`);
     });
 
   } catch (error) {
@@ -360,6 +481,8 @@ module.exports = {
   addGeolocationColumns,
   updateGeolocationsManually,
   getAttackLocationsWithGeo,
+  getCentersFromDatabase,
+  getHistoricalAttacks,
   getGeolocation,
   showCurrentGeolocations
 };
