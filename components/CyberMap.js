@@ -332,6 +332,11 @@ export default function GlobeSocketMap() {
         Recenter Map
       </button>
 
+      {/* Threat Log Card */}
+      <div style={{ position: "absolute", bottom: "10px", left: "10px", zIndex: 1000 }}>
+        <ThreatLogCard />
+      </div>
+
       <Viewer full ref={viewerRef} timeline={false} animation={false}>
         {/* Defense Centers */}
         {centersRef.current.map((c) => (
@@ -354,17 +359,16 @@ export default function GlobeSocketMap() {
 
         {/* Rudal musuh */}
         {Array.from(attackRoutesRef.current.values()).map((r) => {
-          // Jika sedang fading, animasi fade dari ekor ke ujung depan
+          // Jika sedang fading, animasi fade dari awal ke titik terbaru
           if (r.completed && r.fadeStartTime) {
             const fadeProgress = Math.min(
               (Date.now() - r.fadeStartTime) / r.fadeDuration,
               1
             );
-            const fadeIdx = Math.floor(fadeProgress * r.positions.length);
 
             const fadingPositions = new CallbackProperty(() => {
-              const startIdx = Math.max(0, r.positions.length - 1 - fadeIdx);
-              return r.positions.slice(startIdx);
+              const startIndex = Math.floor(fadeProgress * r.positions.length);
+              return r.positions.slice(startIndex);
             }, false);
 
             const fadeColor = new Cesium.ColorMaterialProperty(
@@ -412,9 +416,9 @@ export default function GlobeSocketMap() {
                 position={movingPoint}
                 point={{
                   pixelSize: 12,
-                  color: Cesium.Color.YELLOW,
-                  outlineColor: Cesium.Color.ORANGE,
-                  outlineWidth: 3,
+                  color: r.color,
+                  outlineColor: Cesium.Color.BLACK,
+                  outlineWidth: 2,
                 }}
               />
             </Entity>

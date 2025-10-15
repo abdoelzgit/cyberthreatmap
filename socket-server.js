@@ -17,7 +17,7 @@ const PORT = 4000;
 // CONFIG
 const EARTH_RADIUS = 6371000;
 const ATTACK_SPEED_MPS = 30000; // incoming missile speed (m/s) - increased for faster visualization
-const UPDATE_INTERVAL = 800; // ms — event generation interval - reduced for more frequent attacks
+const UPDATE_INTERVAL = 400; // ms — event generation interval - reduced for more frequent attacks
 const SIM_STEP_MS = 50; // ms — interval untuk update simulasi posisi (20 updates/detik untuk smoother animation)
 
 // Dynamic locations from database geolocation
@@ -128,7 +128,7 @@ function genEvent() {
       source,
       target,
       threatLevel: historicalAttack.threatLevel,
-      color: getThreatColor(historicalAttack.threatLevel),
+      color: historicalAttack.color,
       totalDistance,
       attackTravelTimeMs,
       timestamp: Date.now(),
@@ -262,29 +262,31 @@ async function initializeLocations() {
       console.log(`${i + 1}. ${loc.id} [${loc.lat}, ${loc.lng}]`);
     });
 
-    // Set manual centers (target servers)
-    CENTERS = [
-      {
-        id: "Server Jakarta",
-        lat: -6.177463257461286,
-        lng: 106.83199928943905,
-        ip: "10.90.24.100", // Example IP
-        city: "Jakarta",
-        country: "Indonesia",
-        attack_count: attackerResult.rows.length
-      },
-      {
-        id: "Server Singapore",
-        lat: 1.327532426561102,
-        lng: 103.84461791330435,
-        ip: "10.90.66.100", // Example IP
-        city: "Singapore",
-        country: "Singapore",
-        attack_count: Math.floor(attackerResult.rows.length / 2)
-      }
-    ];
+    // Load centers (target servers) from agent IPs in attacker table
+    const centerResult = await client.query(`
+      SELECT
+        agent_ip,
+        agent_lat,
+        agent_lng,
+        agent_name,
+        COUNT(*) as attack_count
+      FROM attacker
+      WHERE agent_ip IS NOT NULL AND agent_lat IS NOT NULL AND agent_lng IS NOT NULL
+      GROUP BY agent_ip, agent_lat, agent_lng, agent_name
+      ORDER BY attack_count DESC
+    `);
 
-    console.log(`✅ Set ${CENTERS.length} manual center locations`);
+    CENTERS = centerResult.rows.map((row, index) => ({
+      id: `${row.agent_name} Server (${row.agent_ip})`,
+      lat: parseFloat(row.agent_lat),
+      lng: parseFloat(row.agent_lng),
+      ip: row.agent_ip,
+      city: 'Unknown', // We don't have city data for agents
+      country: 'Unknown', // We don't have country data for agents
+      attack_count: parseInt(row.attack_count)
+    }));
+
+    console.log(`✅ Loaded ${CENTERS.length} center locations from agent IPs`);
 
     // Debug: Show loaded centers
     CENTERS.forEach((center, i) => {
@@ -294,25 +296,44 @@ async function initializeLocations() {
     });
 
     // Create historical attacks from attacker table data
-    HISTORICAL_ATTACKS = attackerResult.rows.map((row, index) => ({
-      id: `attack-${index}`,
-      attackType: 'Cyber Attack',
-      source: {
-        ip: row.source_ip,
-        country: 'Unknown',
-        city: 'Unknown',
-        lat: parseFloat(row.lat),
-        lng: parseFloat(row.lon)
-      },
-      target: CENTERS[0], // Default to first center
-      threatLevel: 'Medium',
-      timestamp: row.time,
-      signature: row.agent_name,
-      category: 'Unknown'
-    }));
+    HISTORICAL_ATTACKS = attackerResult.rows.map((row, index) => {
+      // Find the matching center based on agent_ip
+      const matchingCenter = CENTERS.find(center => center.ip === row.agent_ip) || CENTERS[0];
 
-    // Sort historical attacks by timestamp in ascending order (oldest first)
-    HISTORICAL_ATTACKS.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+      // Determine threat level based on level value using THREAT_LEVELS
+      let threatLevelObj;
+      if (row.level >= 15) {
+        threatLevelObj = THREAT_LEVELS.find(t => t.level === 'Critical');
+      } else if (row.level >= 12) {
+        threatLevelObj = THREAT_LEVELS.find(t => t.level === 'High');
+      } else if (row.level >= 7) {
+        threatLevelObj = THREAT_LEVELS.find(t => t.level === 'Medium');
+      } else {
+        threatLevelObj = THREAT_LEVELS.find(t => t.level === 'Low');
+      }
+
+      return {
+        id: `attack-${index}`,
+        attackType: 'Cyber Attack',
+        source: {
+          ip: row.source_ip,
+          country: 'Unknown',
+          city: 'Unknown',
+          lat: parseFloat(row.lat),
+          lng: parseFloat(row.lon)
+        },
+        target: matchingCenter,
+        threatLevel: threatLevelObj.level,
+        color: threatLevelObj.color,
+        weight: threatLevelObj.weight,
+        timestamp: row.time,
+        signature: row.agent_name,
+        category: 'Unknown'
+      };
+    });
+
+    // Sort historical attacks by timestamp in descending order (newest first)
+    HISTORICAL_ATTACKS.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     console.log(
       `✅ Created and sorted ${HISTORICAL_ATTACKS.length} historical attacks from attacker table`
