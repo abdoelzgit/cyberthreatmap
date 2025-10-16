@@ -20,7 +20,7 @@ export default function ThreatLogCard() {
 
       const newLog = `[${new Date().toLocaleTimeString()}] ${e.source.id} → ${e.target.id} - ${attackType} - ${threatLevel}`;
 
-      setLogs((prev) => [newLog, ...prev]);
+      setLogs((prev) => [newLog, ...prev].slice(0, 50)); // Keep only last 50 logs
     });
 
     return () => {

@@ -241,7 +241,7 @@ async function initializeLocations() {
       const key = `${row.source_ip}-${row.lon}-${row.lat}`;
       if (!uniqueSources.has(key)) {
         uniqueSources.set(key, {
-          id: `${row.source_ip} (${row.agent_name})`,
+          id: row.source_ip,
           lat: parseFloat(row.lat),
           lng: parseFloat(row.lon),
           ip: row.source_ip,
