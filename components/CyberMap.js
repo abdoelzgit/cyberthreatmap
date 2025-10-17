@@ -368,7 +368,10 @@ export default function GlobeSocketMap() {
 
             const fadingPositions = new CallbackProperty(() => {
               const startIndex = Math.floor(fadeProgress * r.positions.length);
-              return r.positions.slice(startIndex);
+              const endIndex = r.positions.length;
+              const maxLength = Math.min(50, endIndex - startIndex); // Maksimal 50 titik untuk panjang garis terbatas
+              const actualStartIndex = Math.max(startIndex, endIndex - maxLength);
+              return r.positions.slice(actualStartIndex, endIndex);
             }, false);
 
             const fadeColor = new Cesium.ColorMaterialProperty(
@@ -383,7 +386,7 @@ export default function GlobeSocketMap() {
                 <Entity
                   polyline={{
                     positions: fadingPositions,
-                    width: 5,
+                    width: 3,
                     material: fadeColor,
                   }}
                 />
@@ -391,10 +394,12 @@ export default function GlobeSocketMap() {
             );
           }
 
-          // Animasi normal - selalu ikuti jalur geodesic
+          // Animasi normal - selalu ikuti jalur geodesic dengan panjang maksimal
           const currentPositions = new CallbackProperty(() => {
             const idx = Math.floor(r.frac * (r.positions.length - 1));
-            return r.positions.slice(0, idx + 1);
+            const maxLength = Math.min(50, r.positions.length); // Maksimal 50 titik untuk panjang garis terbatas
+            const startIdx = Math.max(0, idx - maxLength + 1);
+            return r.positions.slice(startIdx, idx + 1);
           }, false);
 
           const movingPoint = new CallbackProperty(() => {
@@ -408,19 +413,11 @@ export default function GlobeSocketMap() {
               <Entity
                 polyline={{
                   positions: currentPositions,
-                  width: 5,
+                  width: 3,
                   material: r.color.withAlpha(0.8),
                 }}
               />
-              <Entity
-                position={movingPoint}
-                point={{
-                  pixelSize: 12,
-                  color: r.color,
-                  outlineColor: Cesium.Color.BLACK,
-                  outlineWidth: 2,
-                }}
-              />
+             
             </Entity>
           );
         })}

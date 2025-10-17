@@ -332,7 +332,7 @@ async function initializeLocations() {
       };
     });
 
-    // Sort historical attacks by timestamp in descending order (newest first)
+    // Sort historical attacks by timestamp in descending order (edt first)
     HISTORICAL_ATTACKS.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     console.log(
@@ -363,12 +363,7 @@ async function initializeLocations() {
         lat: -6.177463257461286,
         lng: 106.83199928943905,
       },
-      {
-        id: "Server Singapore",
-        lat: 1.327532426561102,
-        lng: 103.84461791330435,
-      },
-      { id: "Server Tokyo", lat: 35.6762, lng: 139.6503 },
+      
     ];
     HISTORICAL_ATTACKS = [];
     console.log("⚠️ Using fallback locations and centers");
